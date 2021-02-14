@@ -1,7 +1,8 @@
 import React from 'react';
+import { SignContainer } from './styles';
 
 function Sign({ children }) {
-    return <div>{children}</div>;
+    return <SignContainer>{children}</SignContainer>;
 }
 
 export default Sign;
