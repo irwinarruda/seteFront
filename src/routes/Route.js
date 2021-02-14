@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import Menu from '../pages/_layouts/menu';
+import Sign from '../pages/_layouts/sign';
 
 function RouteWrapper({ component: Component, isPrivate = false, ...rest }) {
     const logged = false;
@@ -16,9 +16,9 @@ function RouteWrapper({ component: Component, isPrivate = false, ...rest }) {
         <Route
             {...rest}
             render={(props) => (
-                <Menu>
+                <Sign>
                     <Component {...props} />
-                </Menu>
+                </Sign>
             )}
         />
     );

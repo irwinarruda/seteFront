@@ -5,12 +5,12 @@ import GlobalStyles from './styles/global';
 
 function App() {
     return (
-        <div>
+        <>
             <BrowserRouter>
                 <GlobalStyles />
                 <Routes />
             </BrowserRouter>
-        </div>
+        </>
     );
 }
 
