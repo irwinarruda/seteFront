@@ -1,9 +1,11 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContex';
+import Menu from '../pages/_layouts/menu';
 import Sign from '../pages/_layouts/sign';
 
 function RouteWrapper({ component: Component, isPrivate = false, ...rest }) {
-    const logged = false;
+    const { logged } = React.useContext(AuthContext);
 
     if (!logged && isPrivate) {
         return <Redirect to="/" />;
@@ -12,13 +14,15 @@ function RouteWrapper({ component: Component, isPrivate = false, ...rest }) {
         return <Redirect to="/dashboard" />;
     }
 
+    const LayoutComponent = isPrivate ? Menu : Sign;
+
     return (
         <Route
             {...rest}
             render={(props) => (
-                <Sign>
+                <LayoutComponent>
                     <Component {...props} />
-                </Sign>
+                </LayoutComponent>
             )}
         />
     );
