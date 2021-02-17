@@ -1,10 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import {
     MainMenuContainer,
     MainMenuHeaderContainer,
     MainMenuHeader,
 } from './styles';
+import { Link } from 'react-router-dom';
 import { AuthContext } from '../../../context/AuthContex';
 import SeteLogoWhite from '../../../assets/svg/sete-logo-white.svg';
 
@@ -17,9 +17,9 @@ function Menu({ children }) {
         <MainMenuContainer>
             <MainMenuHeaderContainer>
                 <MainMenuHeader>
-                    <div>
+                    <Link to="/dashboard">
                         <img src={SeteLogoWhite} alt="Logo do software SETE" />
-                    </div>
+                    </Link>
                     <nav>
                         <ul>
                             <li>

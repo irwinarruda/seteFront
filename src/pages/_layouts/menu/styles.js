@@ -7,17 +7,27 @@ export const MainMenuContainer = styled.div`
 
 export const MainMenuHeaderContainer = styled.header`
     width: 100%;
+    max-height: 130px;
+    height: 20%;
     background-color: #383a3a;
 `;
 export const MainMenuHeader = styled.div`
     max-width: calc(1170px + 2 * var(--padding-mobile));
     width: 100%;
+    height: 100%;
     padding: 0 var(--padding-mobile);
     margin: 0 auto;
 
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    & > a {
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    }
 
     & > nav {
         max-width: 290px;
