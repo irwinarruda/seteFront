@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import InputText from '../../components/InputText';
 import SignButton from '../../components/Buttons/SignButton';
 import SeteLogo from '../../assets/svg/sete-logo.svg';
+import axios from 'axios';
 
 function SignIn() {
     const [email, setEmail] = React.useState('');
@@ -11,6 +12,21 @@ function SignIn() {
 
     function handleSubmit(event) {
         event.preventDefault();
+        const body = {
+            usuario: email,
+            senha: password,
+        };
+        axios({
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+            },
+            url: 'http://sete.api/authenticator',
+            data: body,
+        }).then((res) => {
+            console.log(res.data.json());
+        });
     }
 
     return (
