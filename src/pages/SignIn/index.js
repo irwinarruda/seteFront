@@ -16,6 +16,19 @@ function SignIn() {
             usuario: email,
             senha: password,
         };
+        /* fetch('http://sete.api/authenticator', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body),
+        })
+            .then((res) => {
+                return res.json();
+            })
+            .then((json) => {
+                console.log(json);
+            }); */
         axios({
             method: 'post',
             headers: {
@@ -23,10 +36,14 @@ function SignIn() {
                 Accept: 'application/json',
             },
             url: 'http://sete.api/authenticator',
-            data: body,
-        }).then((res) => {
-            console.log(res.data.json());
-        });
+            data: JSON.stringify(body),
+        })
+            .then((res) => {
+                console.log(res.data);
+            })
+            .catch((err) => {
+                console.error(err);
+            });
     }
 
     return (
