@@ -33,6 +33,7 @@
         "import/prefere-default-export": "off",
         "react/prop-types": 0,
         "no-unused-vars": "off",
-        "react/jsx-props-no-spreading": "off"
+        "react/jsx-props-no-spreading": "off",
+        "prettier.endOfLine": "auto"
     }
 }
