@@ -1,3 +1,10 @@
+# Open Street Maps Docs
+
+- https://react-leaflet.js.org/docs/start-setup
+- https://leafletjs.com/reference-1.7.1.html#map-example
+- https://blog.rocketseat.com.br/mapas-com-react-usando-leaflet/
+- https://leaflet-extras.github.io/leaflet-providers/preview/
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

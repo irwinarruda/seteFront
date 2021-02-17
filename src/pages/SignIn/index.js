@@ -1,6 +1,7 @@
 import React from 'react';
 import { Container, SignInContainer } from './styles';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthContex';
 import InputText from '../../components/InputText';
 import SignButton from '../../components/Buttons/SignButton';
 import SeteLogo from '../../assets/svg/sete-logo.svg';
@@ -8,9 +9,11 @@ import SeteLogo from '../../assets/svg/sete-logo.svg';
 function SignIn() {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
+    const { login } = React.useContext(AuthContext);
 
     function handleSubmit(event) {
         event.preventDefault();
+        login();
     }
 
     return (
