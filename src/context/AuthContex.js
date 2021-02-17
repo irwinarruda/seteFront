@@ -11,6 +11,9 @@ export function AuthProvider({ children }) {
                 login: () => {
                     setLogged(true);
                 },
+                logout: () => {
+                    setLogged(false);
+                },
             }}
         >
             {children}

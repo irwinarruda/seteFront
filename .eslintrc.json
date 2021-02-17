@@ -34,6 +34,6 @@
         "react/prop-types": 0,
         "no-unused-vars": "off",
         "react/jsx-props-no-spreading": "off",
-        "prettier.endOfLine": "auto"
+        "prettier.endOfLine": "off"
     }
 }
