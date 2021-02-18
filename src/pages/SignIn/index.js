@@ -1,51 +1,53 @@
 import React from 'react';
 import { Container, SignInContainer } from './styles';
 import { Link } from 'react-router-dom';
+import 'react-toastify/dist/ReactToastify.css';
 import { AuthContext } from '../../context/AuthContex';
 import InputText from '../../components/InputText';
 import SignButton from '../../components/Buttons/SignButton';
 import SeteLogo from '../../assets/svg/sete-logo.svg';
+
+import { USER_LOGIN_AUTH } from '../../UserApi';
 import axios from 'axios';
+
+import { toast } from 'react-toastify';
+toast.configure();
 
 function SignIn() {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const { login } = React.useContext(AuthContext);
 
-    function handleSubmit(event) {
-        event.preventDefault();
-        const body = {
-            usuario: email,
-            senha: password,
-        };
-        /* fetch('http://sete.api/authenticator', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(body),
-        })
-            .then((res) => {
-                return res.json();
-            })
-            .then((json) => {
-                console.log(json);
-            }); */
-        axios({
-            method: 'post',
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-            },
-            url: 'http://sete.api/authenticator',
-            data: JSON.stringify(body),
-        })
-            .then((res) => {
-                console.log(res.data);
-            })
-            .catch((err) => {
-                console.error(err);
+    async function handleSubmit(event) {
+        try {
+            event.preventDefault();
+            const body = {
+                usuario: email,
+                senha: password,
+            };
+            const response = await axios(USER_LOGIN_AUTH(body));
+            const json = await response.data;
+            if (json.status) {
+                throw new Error(json.messages);
+            }
+            if (json.access_token) {
+                window.localStorage.setItem(
+                    'token',
+                    json.access_token.access_token,
+                );
+                login();
+            }
+        } catch (err) {
+            toast.error(err.toString(), {
+                position: 'top-center',
+                autoClose: 7000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
             });
+        }
     }
 
     return (

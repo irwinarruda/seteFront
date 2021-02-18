@@ -11,6 +11,7 @@ import SeteLogoWhite from '../../../assets/svg/sete-logo-white.svg';
 function Menu({ children }) {
     const { logout } = React.useContext(AuthContext);
     function handleLogoutClick() {
+        window.localStorage.removeItem('token');
         logout();
     }
     return (
