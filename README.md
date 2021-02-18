@@ -5,6 +5,10 @@
 - https://blog.rocketseat.com.br/mapas-com-react-usando-leaflet/
 - https://leaflet-extras.github.io/leaflet-providers/preview/
 
+# React Toastify
+
+- https://www.npmjs.com/package/react-toastify
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
