@@ -1,6 +1,7 @@
 import React from 'react';
 import { Container, SignInContainer } from './styles';
 import { Link } from 'react-router-dom';
+import 'react-toastify/dist/ReactToastify.css';
 import { AuthContext } from '../../context/AuthContex';
 import InputText from '../../components/InputText';
 import SignButton from '../../components/Buttons/SignButton';
@@ -8,6 +9,9 @@ import SeteLogo from '../../assets/svg/sete-logo.svg';
 
 import { USER_LOGIN_AUTH } from '../../UserApi';
 import axios from 'axios';
+
+import { toast } from 'react-toastify';
+toast.configure();
 
 function SignIn() {
     const [email, setEmail] = React.useState('');
@@ -22,12 +26,27 @@ function SignIn() {
                 senha: password,
             };
             const response = await axios(USER_LOGIN_AUTH(body));
-            const access_token = response.data.access_token;
-            window.localStorage.setItem('token', access_token);
-            console.log(access_token);
-            login();
+            const json = await response.data;
+            if (json.status) {
+                throw new Error(json.messages);
+            }
+            if (json.access_token) {
+                window.localStorage.setItem(
+                    'token',
+                    json.access_token.access_token,
+                );
+                login();
+            }
         } catch (err) {
-            console.error(err);
+            toast.error(err.toString(), {
+                position: 'top-center',
+                autoClose: 7000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
         }
     }
 
