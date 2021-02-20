@@ -5,14 +5,13 @@ import {
     MainMenuHeader,
 } from './styles';
 import { Link } from 'react-router-dom';
-import { AuthContext } from '../../../context/AuthContex';
+import { useAuth } from '../../../context/AuthContex';
 import SeteLogoWhite from '../../../assets/svg/sete-logo-white.svg';
 
 function Menu({ children }) {
-    const { logout } = React.useContext(AuthContext);
+    const { signOut } = useAuth();
     function handleLogoutClick() {
-        window.localStorage.removeItem('token');
-        logout();
+        signOut();
     }
     return (
         <MainMenuContainer>

@@ -1,29 +1,31 @@
 import React from 'react';
 import { Container, SignInContainer } from './styles';
 import { Link } from 'react-router-dom';
-import 'react-toastify/dist/ReactToastify.css';
-import { AuthContext } from '../../context/AuthContex';
+import md5 from 'md5';
 import InputText from '../../components/InputText';
 import SignButton from '../../components/Buttons/SignButton';
 import SeteLogo from '../../assets/svg/sete-logo.svg';
 
-import { USER_LOGIN_AUTH } from '../../UserApi';
+import { useAuth } from '../../context/AuthContex';
+import { USER_LOGIN_AUTH } from '../../services/UserApi';
 import axios from 'axios';
 
 import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 toast.configure();
 
 function SignIn() {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
-    const { login } = React.useContext(AuthContext);
+    const { signIn } = useAuth();
 
     async function handleSubmit(event) {
         try {
             event.preventDefault();
             const body = {
                 usuario: email,
-                senha: password,
+                senha: md5(password),
             };
             const response = await axios(USER_LOGIN_AUTH(body));
             const json = await response.data;
@@ -31,11 +33,7 @@ function SignIn() {
                 throw new Error(json.messages);
             }
             if (json.access_token) {
-                window.localStorage.setItem(
-                    'token',
-                    json.access_token.access_token,
-                );
-                login();
+                signIn(json.access_token.access_token);
             }
         } catch (err) {
             toast.error(err.toString(), {
