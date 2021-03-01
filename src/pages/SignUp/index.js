@@ -9,6 +9,7 @@ function SignUp() {
     const [nome, setNome] = React.useState('');
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
+    const [confirmPassword, setConfirmPassword] = React.useState('');
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -41,6 +42,13 @@ function SignUp() {
                         inputId="password-field"
                         value={password}
                         setValue={setPassword}
+                    />
+                    <InputText
+                        type="password"
+                        labelText="Confirmar Senha"
+                        inputId="confirm-password-field"
+                        value={confirmPassword}
+                        setValue={setConfirmPassword}
                     />
                     <div>
                         <SignButton type="submit">Criar Conta</SignButton>

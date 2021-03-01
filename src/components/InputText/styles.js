@@ -8,21 +8,21 @@ export const Label = styled.label`
     width: 100%;
     margin-left: 2px;
 
-    color: #383a3a;
+    color: var(--color-black);
     font-weight: 500;
-    font-family: 'Roboto', sans-serif;
-    font-size: 24px;
+    font-family: var(--font-primary);
+    font-size: 20px;
 `;
 
 export const Input = styled.input`
     display: block;
     width: 100%;
-    padding: 13px 10px;
-    background: #ffffff;
+    padding: 10px 15px;
+    background: var(--color-white);
     border: 1px solid rgba(0, 0, 0, 0.3);
     border-radius: 5px;
 
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 300;
-    font-family: 'Roboto', sans-serif;
+    font-family: var(--font-primary);
 `;

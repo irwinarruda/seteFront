@@ -4,7 +4,7 @@ export const ButtonContainer = styled.button`
     display: block;
     text-align: center;
     width: 100%;
-    max-width: 185px;
+    max-width: 170px;
     padding: 10px 0px;
     border: none;
     background-color: #5e7b9e;
@@ -12,8 +12,8 @@ export const ButtonContainer = styled.button`
 
     color: #ffffff;
     font-weight: 600;
-    font-size: 24px;
-    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+    font-family: var(--font-primary);
 
     &:hover {
         background-color: #5b718b;
