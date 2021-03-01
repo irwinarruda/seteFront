@@ -2,14 +2,17 @@ import styled from 'styled-components';
 
 export const MainMenuContainer = styled.div`
     width: 100%;
-    height: 100%;
+    min-height: 100vh;
+    height: auto;
+    display: flex;
+    flex-direction: column;
 `;
 
 export const MainMenuHeaderContainer = styled.header`
     width: 100%;
     max-height: 130px;
     height: 20%;
-    background-color: #383a3a;
+    background-color: var(--color-grey);
 `;
 export const MainMenuHeader = styled.div`
     max-width: calc(1170px + 2 * var(--padding-mobile));
@@ -36,12 +39,12 @@ export const MainMenuHeader = styled.div`
             list-style: none;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: flex-end;
 
             li {
                 a {
-                    color: #ffffff;
-                    font-family: 'Roboto', sans-serif;
+                    color: var(--color-white);
+                    font-family: var(--font-primary);
                     font-size: 22px;
                     font-weight: 600;
                     text-decoration: none;

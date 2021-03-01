@@ -23,12 +23,6 @@ function Menu({ children }) {
                     <nav>
                         <ul>
                             <li>
-                                <Link to="/">Feature 1</Link>
-                            </li>
-                            <li>
-                                <Link to="/">Feature 2</Link>
-                            </li>
-                            <li>
                                 <Link to="/" onClick={handleLogoutClick}>
                                     Sair
                                 </Link>

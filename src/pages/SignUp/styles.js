@@ -2,7 +2,8 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
     width: 100%;
-    height: 100%;
+    min-height: 100vh;
+    height: auto;
     padding: 0 20px;
     display: flex;
     align-items: center;
@@ -10,9 +11,9 @@ export const Container = styled.div`
 `;
 
 export const SignUpContainer = styled.div`
-    max-width: 530px;
+    max-width: 470px;
     width: 100%;
-    padding: 5px 70px 50px 70px;
+    padding: 5px 50px 50px 50px;
 
     background-color: #f4f4f4;
     box-shadow: 0px 0px 20px 2px rgba(0, 0, 0, 0.25);
