@@ -2,10 +2,12 @@ import React from 'react';
 import { Label } from './styles';
 
 function InputRadio({ name, id, label, value, checked, setChecked, ...props }) {
-    function handleChange(event) {
-        setChecked(event.target.value);
-        console.log(value);
-    }
+    const handleChange = React.useCallback(
+        (event) => {
+            setChecked(event.target.value);
+        },
+        [setChecked],
+    );
 
     return (
         <Label htmlFor={id}>

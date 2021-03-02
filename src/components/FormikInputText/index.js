@@ -1,25 +1,29 @@
 import React from 'react';
 import { InputContainer, Label, Input } from './styles';
 
-function InputText({ labelText, inputId, value, setValue, ...props }) {
-    const handleInputTextChange = React.useCallback(
-        (event) => {
-            setValue(event.target.value);
-        },
-        [setValue],
-    );
-
+function FormikInputText({
+    labelText,
+    inputId,
+    value,
+    onChange,
+    errors,
+    touched,
+    ...props
+}) {
     return (
         <InputContainer>
             <Label htmlFor={inputId}>{labelText}</Label>
             <Input
                 {...props}
                 id={inputId}
+                name={inputId}
                 value={value}
-                onChange={handleInputTextChange}
+                onChange={onChange}
+                touched={touched}
             />
+            {errors && touched ? <span>{errors}</span> : <span></span>}
         </InputContainer>
     );
 }
 
-export default InputText;
+export default FormikInputText;

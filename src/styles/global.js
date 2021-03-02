@@ -3,6 +3,7 @@ import { createGlobalStyle } from 'styled-components';
 export default createGlobalStyle`
     :root {
         --font-primary: 'Roboto', sans-serif;
+        --color-red: #FF6161;
         --color-yellow: #E4C949;
         --color-dark-yellow: #FBCF02;
         --color-blue: #5E7B9E;

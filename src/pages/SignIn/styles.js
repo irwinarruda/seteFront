@@ -29,11 +29,11 @@ export const SignInContainer = styled.div`
 
     & > form > div {
         & + div {
-            margin-top: 25px;
+            margin-top: 10px;
         }
         &:last-child {
             width: 100%;
-            margin-top: 35px;
+            margin-top: 25px;
             display: flex;
             align-items: center;
             justify-content: center;
