@@ -15,6 +15,14 @@ export const ButtonContainer = styled.button`
     font-size: 20px;
     font-family: var(--font-primary);
 
+    &:disabled {
+        background-color: #405267;
+        color: #c8c8c8;
+        cursor: wait;
+        &:hover {
+            background-color: #405267;
+        }
+    }
     &:hover {
         background-color: #5b718b;
     }

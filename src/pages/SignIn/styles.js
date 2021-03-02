@@ -29,7 +29,7 @@ export const SignInContainer = styled.div`
 
     & > form > div {
         & + div {
-            margin-top: 10px;
+            margin-top: 7px;
         }
         &:last-child {
             width: 100%;

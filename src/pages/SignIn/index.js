@@ -19,26 +19,15 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 
 function SignIn() {
-    const [email, setEmail] = React.useState('');
-    const [password, setPassword] = React.useState('');
     const { signIn } = useAuth();
 
-    async function handleSubmit(event) {
+    async function handleFormikSubmit(values, { setSubmitting, resetForm }) {
         try {
-            event.preventDefault();
-            const schema = Yup.object().shape({
-                usuario: Yup.string()
-                    .required('O Email deve ser preenchido')
-                    .email('O valor deve ser um email válido'),
-                senha: Yup.string().min(3, 'Senha deve ter 3 caracteres'),
-            });
+            setSubmitting(true);
             const body = {
-                usuario: email,
-                senha: md5(password),
+                usuario: values['email-field'],
+                senha: md5(values['password-field']),
             };
-            await schema.validate(body, {
-                abortEarly: false,
-            });
             const response = await axios(USER_LOGIN_AUTH(body));
             const data = await response.data;
             if (!data.status) {
@@ -46,6 +35,7 @@ function SignIn() {
             }
             if (data.access_token) {
                 signIn(data.access_token.access_token);
+                resetForm();
             }
         } catch (err) {
             toast.error(err.toString(), {
@@ -57,6 +47,8 @@ function SignIn() {
                 draggable: true,
                 progress: undefined,
             });
+        } finally {
+            setSubmitting(false);
         }
     }
 
@@ -77,14 +69,15 @@ function SignIn() {
                             'Senha deve ter 3 caracteres',
                         ),
                     })}
+                    onSubmit={handleFormikSubmit}
                 >
                     {({
                         values,
                         errors,
                         touched,
                         handleChange,
-                        handleBlur,
                         handleSubmit,
+                        isSubmitting,
                     }) => (
                         <form onSubmit={handleSubmit}>
                             <FormikInputText
@@ -93,7 +86,6 @@ function SignIn() {
                                 inputId="email-field"
                                 value={values['email-field']}
                                 onChange={handleChange}
-                                onBlur={handleBlur}
                                 errors={errors['email-field']}
                                 touched={touched['email-field']}
                             />
@@ -103,12 +95,16 @@ function SignIn() {
                                 inputId="password-field"
                                 value={values['password-field']}
                                 onChange={handleChange}
-                                onBlur={handleBlur}
                                 errors={errors['password-field']}
                                 touched={touched['password-field']}
                             />
                             <div>
-                                <SignButton type="submit">Entrar</SignButton>
+                                <SignButton
+                                    type="submit"
+                                    disabled={isSubmitting}
+                                >
+                                    Entrar
+                                </SignButton>
                                 <Link to="/registrar">Registrar</Link>
                             </div>
                         </form>
