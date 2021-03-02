@@ -2,9 +2,13 @@ import React from 'react';
 import { InputContainer, Label, Input } from './styles';
 
 function InputText({ labelText, inputId, value, setValue, ...props }) {
-    function handleInputTextChange(event) {
-        setValue(event.target.value);
-    }
+    const handleInputTextChange = React.useCallback(
+        (event) => {
+            setValue(event.target.value);
+        },
+        [setValue],
+    );
+
     return (
         <InputContainer>
             <Label htmlFor={inputId}>{labelText}</Label>

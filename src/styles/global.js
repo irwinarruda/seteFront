@@ -3,6 +3,7 @@ import { createGlobalStyle } from 'styled-components';
 export default createGlobalStyle`
     :root {
         --font-primary: 'Roboto', sans-serif;
+        --color-red: #FF6161;
         --color-yellow: #E4C949;
         --color-dark-yellow: #FBCF02;
         --color-blue: #5E7B9E;
@@ -14,7 +15,7 @@ export default createGlobalStyle`
         --color-dark-grey: #E5E5E5;
         --color-grey: #6B6B6B;
         --color-black: #383A3A;
-        --padding-mobile: 30px;
+        --padding-mobile: 20px;
     }
     * {
         margin: 0;

@@ -6,30 +6,15 @@ export const Container = styled.section`
     height: auto;
     padding: 0 var(--padding-mobile);
     margin: 0 auto;
-    flex-grow: 1;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-`;
-
-export const LeafletContainer = styled.div`
-    width: 100%;
-    height: 100%;
-    position: relative;
-
-    flex-grow: 1;
-    .mapview {
-        width: 100%;
-        height: 100%;
-    }
+    display: block;
 `;
 
 export const BoxContainer = styled.div`
     max-width: 1030px;
     width: 100%;
-    height: 700px;
-    margin: 0px auto 0px auto;
+    height: fit-content;
+    margin: 42px auto 0px auto;
 
     display: flex;
     flex-direction: column;
@@ -91,6 +76,71 @@ export const BoxNavMenu = styled.nav`
                 path {
                     fill: var(--color-black);
                 }
+            }
+        }
+    }
+
+    @media (max-width: 750px) {
+        .box-nav-button {
+            & > h2 {
+                display: none;
+            }
+        }
+    }
+`;
+
+export const LeafletContainer = styled.div`
+    width: 100%;
+    height: 100%;
+    padding: 0px 1px 1px 1px;
+    position: relative;
+
+    flex-grow: 1;
+    .mapview {
+        border-radius: 0px 0px 10px 10px;
+        width: 100%;
+        height: 100%;
+    }
+`;
+
+export const FreeAccessContainer = styled.div`
+    width: 100%;
+    height: 100%;
+    padding-bottom: 60px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0px 0px 10px 10px;
+
+    .free-access-content {
+        max-width: 500px;
+        width: 100%;
+        margin: 0 auto;
+
+        & > h3 {
+            width: 100%;
+            display: block;
+
+            font-family: var(--font-primary);
+            font-weight: 400;
+            color: var(--color-black);
+        }
+
+        & > form {
+            max-width: 410px;
+            width: 100%;
+            margin: 40px auto 0px auto;
+
+            .free-access-radio-container {
+                margin-top: 20px;
+                label + label {
+                    margin-top: 5px;
+                }
+            }
+
+            .free-access-button-container {
+                margin-top: 40px;
             }
         }
     }
