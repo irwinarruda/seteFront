@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const FreeAccessContainer = styled.div`
     width: 100%;
     height: 100%;
-    padding-bottom: 60px;
+    padding: 80px 10px;
 
     display: flex;
     align-items: center;

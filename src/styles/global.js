@@ -14,7 +14,7 @@ export default createGlobalStyle`
         --color-dark-grey: #E5E5E5;
         --color-grey: #6B6B6B;
         --color-black: #383A3A;
-        --padding-mobile: 30px;
+        --padding-mobile: 20px;
     }
     * {
         margin: 0;

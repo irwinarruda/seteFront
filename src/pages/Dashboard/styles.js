@@ -6,18 +6,15 @@ export const Container = styled.section`
     height: auto;
     padding: 0 var(--padding-mobile);
     margin: 0 auto;
-    flex-grow: 1;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: block;
 `;
 
 export const BoxContainer = styled.div`
     max-width: 1030px;
     width: 100%;
-    height: 700px;
-    margin: 0px auto 0px auto;
+    height: fit-content;
+    margin: 42px auto 0px auto;
 
     display: flex;
     flex-direction: column;
@@ -79,6 +76,14 @@ export const BoxNavMenu = styled.nav`
                 path {
                     fill: var(--color-black);
                 }
+            }
+        }
+    }
+
+    @media (max-width: 750px) {
+        .box-nav-button {
+            & > h2 {
+                display: none;
             }
         }
     }

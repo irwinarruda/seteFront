@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const LeafletContainer = styled.div`
     width: 100%;
-    height: 100%;
+    height: 580px;
     padding: 0px 1px 1px 1px;
     position: relative;
 

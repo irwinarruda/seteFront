@@ -10,8 +10,7 @@ export const MainMenuContainer = styled.div`
 
 export const MainMenuHeaderContainer = styled.header`
     width: 100%;
-    max-height: 130px;
-    height: 20%;
+    height: 100%;
     background-color: var(--color-grey);
 `;
 export const MainMenuHeader = styled.div`
@@ -26,6 +25,7 @@ export const MainMenuHeader = styled.div`
     justify-content: space-between;
 
     & > a {
+        margin-left: -15px;
         img {
             width: 100%;
             height: 100%;
@@ -61,8 +61,15 @@ export const MainMenuHeader = styled.div`
     @media (max-width: 580px) {
         flex-direction: column;
 
+        & > a {
+            margin-left: 0px;
+        }
+
         & > nav {
             padding: 20px 0;
+            ul {
+                justify-content: center;
+            }
         }
     }
 `;
