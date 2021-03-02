@@ -30,3 +30,15 @@ export const MUNICIPIOS_GET_ALL = (token) => {
         url: BASE_URL + '/municipios',
     };
 };
+
+export const FREE_ACCESS_FIREBASE = (body, token) => {
+    return {
+        method: 'post',
+        headers: {
+            Authorization: token,
+            'Content-Type': 'application/json',
+        },
+        url: BASE_URL + '/permissao-firebase',
+        data: JSON.stringify(body),
+    };
+};
