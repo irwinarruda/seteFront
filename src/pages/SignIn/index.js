@@ -30,7 +30,7 @@ function SignIn() {
             };
             const response = await axios(USER_LOGIN_AUTH(body));
             const data = await response.data;
-            if (!data.status) {
+            if (!data.result) {
                 throw new Error(data.messages);
             }
             if (data.access_token) {
