@@ -64,10 +64,9 @@ function SignIn() {
                         'email-field': Yup.string()
                             .required('O Email deve ser preenchido')
                             .email('O valor deve ser um email válido'),
-                        'password-field': Yup.string().min(
-                            3,
-                            'Senha deve ter 3 caracteres',
-                        ),
+                        'password-field': Yup.string()
+                            .required('Deve digitar a senha')
+                            .min(3, 'Senha deve ter 3 caracteres'),
                     })}
                     onSubmit={handleFormikSubmit}
                 >
@@ -76,7 +75,9 @@ function SignIn() {
                         errors,
                         touched,
                         handleChange,
+                        handleBlur,
                         handleSubmit,
+                        setTouched,
                         isSubmitting,
                     }) => (
                         <form onSubmit={handleSubmit}>
@@ -85,18 +86,22 @@ function SignIn() {
                                 labelText="E-mail"
                                 inputId="email-field"
                                 value={values['email-field']}
-                                onChange={handleChange}
                                 errors={errors['email-field']}
-                                touched={touched['email-field']}
+                                touched={touched}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                setTouched={setTouched}
                             />
                             <FormikInputText
                                 type="password"
                                 labelText="Senha"
                                 inputId="password-field"
                                 value={values['password-field']}
-                                onChange={handleChange}
                                 errors={errors['password-field']}
-                                touched={touched['password-field']}
+                                touched={touched}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                setTouched={setTouched}
                             />
                             <div>
                                 <SignButton
