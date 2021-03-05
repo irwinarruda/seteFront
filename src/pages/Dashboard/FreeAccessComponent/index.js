@@ -9,8 +9,6 @@ toast.configure();
 
 import FormikInputRadio from '../../../components/FormikInputRadio';
 import FormikInputText from '../../../components/FormikInputText';
-import InputText from '../../../components/InputText';
-import InputRadio from '../../../components/InputRadio';
 import MainBlueButton from '../../../components/Buttons/MainBlueButton';
 
 import { useAuth } from '../../../context/AuthContex';
@@ -18,7 +16,7 @@ import { FREE_ACCESS_FIREBASE } from '../../../services/UserApi';
 import axios from 'axios';
 
 function FreeAccessComponent() {
-    const { signOut } = useAuth();
+    const { handleRequestError } = useAuth();
 
     async function handleFormikSubmit(values, { setSubmitting, resetForm }) {
         try {
@@ -43,18 +41,7 @@ function FreeAccessComponent() {
                 progress: undefined,
             });
         } catch (err) {
-            let errorMessage;
-
-            if (err.response) {
-                errorMessage = Array.isArray(err.response.data.messages)
-                    ? err.response.data.messages[0]
-                    : err.response.data.messages ||
-                      err.response.status + ': ' + err.response.statusText;
-            } else if (err.request) {
-                errorMessage = err.request;
-            } else {
-                errorMessage = err.message;
-            }
+            const errorMessage = handleRequestError(err);
 
             toast.error(errorMessage, {
                 position: 'top-center',
@@ -65,10 +52,6 @@ function FreeAccessComponent() {
                 draggable: true,
                 progress: undefined,
             });
-
-            if (err.response.status === 401) {
-                signOut();
-            }
         } finally {
             setSubmitting(false);
             resetForm();
