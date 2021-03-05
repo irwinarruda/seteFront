@@ -9,6 +9,27 @@
 
 - https://www.npmjs.com/package/react-toastify
 
+# Axios
+
+- https://www.npmjs.com/package/axios
+- https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
+
+# Formik
+
+- https://formik.org/docs/overview
+
+# Yup 
+
+- https://github.com/jquense/yup
+
+# SweetAlert
+
+- https://sweetalert.js.org/guides/
+
+# Datatables.net
+
+- https://medium.com/@ashish_dev/datatables-net-with-react-js-custom-delete-buttons-912bc2755474
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
