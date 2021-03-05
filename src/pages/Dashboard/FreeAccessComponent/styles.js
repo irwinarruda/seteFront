@@ -30,9 +30,9 @@ export const FreeAccessContainer = styled.div`
             margin: 40px auto 0px auto;
 
             .free-access-radio-container {
-                margin-top: 20px;
+                margin-top: 5px;
                 label + label {
-                    margin-top: 5px;
+                    margin-top: 7px;
                 }
             }
 

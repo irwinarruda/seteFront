@@ -5,35 +5,34 @@ function FormikInputText({
     labelText,
     inputId,
     value,
-    onChange,
     errors,
     touched,
+    onChange,
+    onBlur,
+    setTouched,
     ...props
 }) {
-    const [isFocused, setIsFocused] = React.useState(false);
-
-    const handleInputFocus = React.useCallback(() => {
-        setIsFocused(true);
-    }, []);
-
-    const handleInputBlur = React.useCallback(() => {
-        setIsFocused(false);
-    }, []);
-
+    function handleInputFocus() {
+        const body = {
+            ...touched,
+            [inputId]: false,
+        };
+        setTouched(body);
+    }
     return (
         <InputContainer>
             <Label htmlFor={inputId}>{labelText}</Label>
             <Input
                 onFocus={handleInputFocus}
-                onBlur={handleInputBlur}
+                onBlur={onBlur}
                 {...props}
                 id={inputId}
                 name={inputId}
                 value={value}
                 onChange={onChange}
-                touched={touched}
+                touched={touched[inputId]}
             />
-            {errors && !isFocused ? <span>{errors}</span> : <span></span>}
+            {errors && touched[inputId] ? <span>{errors}</span> : <span></span>}
         </InputContainer>
     );
 }

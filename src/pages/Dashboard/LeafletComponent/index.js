@@ -32,12 +32,25 @@ function LeafletComponent() {
                 const token = window.localStorage.getItem('@seteweb:token');
                 const response = await axios(MUNICIPIOS_GET_ALL(token));
                 const data = await response.data;
-                if (data.result) {
-                    throw new Error(data.messages);
+                if (!data.result) {
+                    throw { response };
                 }
                 setMarkers(data.data);
             } catch (err) {
-                toast.error(err.toString(), {
+                let errorMessage;
+
+                if (err.response) {
+                    errorMessage = Array.isArray(err.response.data.messages)
+                        ? err.response.data.messages[0]
+                        : err.response.data.messages ||
+                          err.response.status + ': ' + err.response.statusText;
+                } else if (err.request) {
+                    errorMessage = err.request;
+                } else {
+                    errorMessage = err.message;
+                }
+
+                toast.error(errorMessage, {
                     position: 'top-center',
                     autoClose: 7000,
                     hideProgressBar: false,
@@ -46,8 +59,10 @@ function LeafletComponent() {
                     draggable: true,
                     progress: undefined,
                 });
-                console.error(err);
-                signOut();
+
+                if (err.response.status === 401) {
+                    signOut();
+                }
             }
         }
         getAllCities();
