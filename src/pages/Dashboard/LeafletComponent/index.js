@@ -24,7 +24,7 @@ function LeafletComponent() {
     const [position, setPosition] = React.useState([-15.75, -47.95]);
     const [mapZoom, setMapZoom] = React.useState(4);
     const [markers, setMarkers] = React.useState([]);
-    const { signOut } = useAuth();
+    const { signOut, handleRequestError } = useAuth();
 
     React.useEffect(() => {
         async function getAllCities() {
@@ -37,18 +37,7 @@ function LeafletComponent() {
                 }
                 setMarkers(data.data);
             } catch (err) {
-                let errorMessage;
-
-                if (err.response) {
-                    errorMessage = Array.isArray(err.response.data.messages)
-                        ? err.response.data.messages[0]
-                        : err.response.data.messages ||
-                          err.response.status + ': ' + err.response.statusText;
-                } else if (err.request) {
-                    errorMessage = err.request;
-                } else {
-                    errorMessage = err.message;
-                }
+                const errorMessage = handleRequestError(err);
 
                 toast.error(errorMessage, {
                     position: 'top-center',
@@ -59,14 +48,10 @@ function LeafletComponent() {
                     draggable: true,
                     progress: undefined,
                 });
-
-                if (err.response.status === 401) {
-                    signOut();
-                }
             }
         }
         getAllCities();
-    }, [signOut]);
+    }, [signOut, handleRequestError]);
 
     return (
         <LeafletContainer>

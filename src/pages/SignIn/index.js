@@ -7,8 +7,6 @@ import SignButton from '../../components/Buttons/SignButton';
 import SeteLogo from '../../assets/svg/sete-logo.svg';
 
 import { useAuth } from '../../context/AuthContex';
-import { USER_LOGIN_AUTH } from '../../services/UserApi';
-import axios from 'axios';
 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -19,7 +17,7 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 
 function SignIn() {
-    const { signIn } = useAuth();
+    const { signInAsync, handleRequestError } = useAuth();
 
     async function handleFormikSubmit(values, { setSubmitting, resetForm }) {
         try {
@@ -28,17 +26,10 @@ function SignIn() {
                 usuario: values['email-field'],
                 senha: md5(values['password-field']),
             };
-            const response = await axios(USER_LOGIN_AUTH(body));
-            const data = await response.data;
-            if (!data.result) {
-                throw new Error(data.messages);
-            }
-            if (data.access_token) {
-                signIn(data.access_token.access_token);
-                resetForm();
-            }
+            await signInAsync(body);
         } catch (err) {
-            toast.error(err.toString(), {
+            const errorMessage = handleRequestError(err);
+            toast.error(errorMessage, {
                 position: 'top-center',
                 autoClose: 7000,
                 hideProgressBar: false,
@@ -49,6 +40,7 @@ function SignIn() {
             });
         } finally {
             setSubmitting(false);
+            resetForm();
         }
     }
 
