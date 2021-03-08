@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { infiniteLoop } from '../../../styles/global';
 
 export const FreeAccessContainer = styled.div`
     width: 100%;
@@ -38,6 +39,14 @@ export const FreeAccessContainer = styled.div`
 
             .free-access-button-container {
                 margin-top: 40px;
+                width: 100%;
+                display: flex;
+                justify-content: center;
+
+                svg {
+                    text-align: center;
+                    animation: ${infiniteLoop} 1.2s infinite;
+                }
             }
         }
     }

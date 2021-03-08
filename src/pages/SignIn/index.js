@@ -2,15 +2,13 @@ import React from 'react';
 import { Container, SignInContainer } from './styles';
 import { Link } from 'react-router-dom';
 
-import FormikInputText from '../../components/FormikInputText';
+import FormikInputText from '../../components/Inputs/FormikInputText';
 import SignButton from '../../components/Buttons/SignButton';
 import SeteLogo from '../../assets/svg/sete-logo.svg';
 
 import { useAuth } from '../../context/AuthContex';
-
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-toast.configure();
+import swal from 'sweetalert';
+import { ImSpinner2 } from 'react-icons/im';
 
 import md5 from 'md5';
 import { Formik } from 'formik';
@@ -27,17 +25,13 @@ function SignIn() {
                 senha: md5(values['password-field']),
             };
             await signInAsync(body);
+            swal('Sucesso!', 'Login feito com sucesso', 'success');
+            setTimeout(() => {
+                swal.close();
+            }, 2000);
         } catch (err) {
             const errorMessage = handleRequestError(err);
-            toast.error(errorMessage, {
-                position: 'top-center',
-                autoClose: 7000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
+            await swal('Erro ao entrar no sistema', errorMessage, 'error');
         } finally {
             setSubmitting(false);
             resetForm();
@@ -96,12 +90,21 @@ function SignIn() {
                                 setTouched={setTouched}
                             />
                             <div>
-                                <SignButton
-                                    type="submit"
-                                    disabled={isSubmitting}
-                                >
-                                    Entrar
-                                </SignButton>
+                                {isSubmitting ? (
+                                    <ImSpinner2
+                                        size={40}
+                                        color="#FBCF02"
+                                        style={{ marginBottom: '5px' }}
+                                    />
+                                ) : (
+                                    <SignButton
+                                        type="submit"
+                                        disabled={isSubmitting}
+                                    >
+                                        Entrar
+                                    </SignButton>
+                                )}
+
                                 <Link to="/registrar">Registrar</Link>
                             </div>
                         </form>

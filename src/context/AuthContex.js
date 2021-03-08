@@ -1,6 +1,5 @@
 import React from 'react';
-import axios from 'axios';
-import { USER_IS_LOGED, USER_LOGIN_AUTH } from '../services/UserApi';
+import { api, USER_IS_LOGED, USER_LOGIN_AUTH } from '../services/UserApi';
 
 export const AuthContext = React.createContext({});
 
@@ -15,9 +14,8 @@ export function AuthProvider({ children }) {
 
     const userIsLoggedAsync = async () => {
         const token = window.localStorage.getItem('@seteweb:token');
-        console.log('cheguei aqui');
         if (token !== '' && token !== null) {
-            const response = await axios(USER_IS_LOGED(token));
+            const response = await api(USER_IS_LOGED(token));
             const data = await response.data;
             setLogged(data.result);
         } else {
@@ -26,7 +24,7 @@ export function AuthProvider({ children }) {
     };
 
     const signInAsync = async (body) => {
-        const response = await axios(USER_LOGIN_AUTH(body));
+        const response = await api(USER_LOGIN_AUTH(body));
         const data = await response.data;
         if (!data.result) {
             throw { response };
@@ -38,6 +36,10 @@ export function AuthProvider({ children }) {
             );
             setLogged(true);
         }
+    };
+    const signIn = (token) => {
+        window.localStorage.setItem('@seteweb:token', token);
+        setLogged(true);
     };
 
     const signOut = () => {
@@ -72,6 +74,7 @@ export function AuthProvider({ children }) {
                 logged,
                 userIsLoggedAsync,
                 signInAsync,
+                signIn,
                 signOut,
                 handleRequestError,
             }}

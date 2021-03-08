@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { infiniteLoop } from '../../styles/global';
 
 export const Container = styled.div`
     width: 100%;
@@ -38,6 +39,10 @@ export const SignInContainer = styled.div`
             align-items: center;
             justify-content: center;
             flex-direction: column;
+
+            svg {
+                animation: ${infiniteLoop} 1.2s infinite;
+            }
 
             a {
                 text-decoration: underline;
