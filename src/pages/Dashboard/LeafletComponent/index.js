@@ -1,9 +1,9 @@
 import React from 'react';
 import { LeafletContainer } from './styles';
 
-import axios from 'axios';
 import { useAuth } from '../../../context/AuthContex';
-import { MUNICIPIOS_GET_ALL } from '../../../services/UserApi';
+import { api, MUNICIPIOS_GET_ALL } from '../../../services/UserApi';
+import swal from 'sweetalert';
 
 import Leaflet from 'leaflet';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
@@ -16,10 +16,6 @@ const mapPinIcon = Leaflet.icon({
     popupAnchor: [0, 0],
 });
 
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-toast.configure();
-
 function LeafletComponent() {
     const [position, setPosition] = React.useState([-15.75, -47.95]);
     const [mapZoom, setMapZoom] = React.useState(4);
@@ -30,7 +26,7 @@ function LeafletComponent() {
         async function getAllCities() {
             try {
                 const token = window.localStorage.getItem('@seteweb:token');
-                const response = await axios(MUNICIPIOS_GET_ALL(token));
+                const response = await api(MUNICIPIOS_GET_ALL(token));
                 const data = await response.data;
                 if (!data.result) {
                     throw { response };
@@ -38,16 +34,7 @@ function LeafletComponent() {
                 setMarkers(data.data);
             } catch (err) {
                 const errorMessage = handleRequestError(err);
-
-                toast.error(errorMessage, {
-                    position: 'top-center',
-                    autoClose: 7000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
+                await swal('Erro ao carregar o mapa', errorMessage, 'error');
             }
         }
         getAllCities();

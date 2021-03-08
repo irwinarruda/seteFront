@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, SignUpContainer } from './styles';
 import { Link } from 'react-router-dom';
-import InputText from '../../components/InputText';
+import InputText from '../../components/Inputs/InputText';
 import SignButton from '../../components/Buttons/SignButton';
 import SeteLogo from '../../assets/svg/sete-logo.svg';
 

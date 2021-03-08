@@ -3,17 +3,14 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { FreeAccessContainer } from './styles';
 
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-toast.configure();
-
-import FormikInputRadio from '../../../components/FormikInputRadio';
-import FormikInputText from '../../../components/FormikInputText';
+import FormikInputRadio from '../../../components/Inputs/FormikInputRadio';
+import FormikInputText from '../../../components/Inputs/FormikInputText';
 import MainBlueButton from '../../../components/Buttons/MainBlueButton';
 
 import { useAuth } from '../../../context/AuthContex';
-import { FREE_ACCESS_FIREBASE } from '../../../services/UserApi';
-import axios from 'axios';
+import { api, FREE_ACCESS_FIREBASE } from '../../../services/UserApi';
+import swal from 'sweetalert';
+import { ImSpinner2 } from 'react-icons/im';
 
 function FreeAccessComponent() {
     const { handleRequestError } = useAuth();
@@ -26,32 +23,18 @@ function FreeAccessComponent() {
                 email: values.permissionEmail,
                 tipo_permissao: values.permissionCheckbox,
             };
-            const response = await axios(FREE_ACCESS_FIREBASE(body, token));
+            const response = await api(FREE_ACCESS_FIREBASE(body, token));
             const data = await response.data;
             if (!data.result) {
                 throw { response };
             }
-            toast.success(data.messages.toString(), {
-                position: 'top-center',
-                autoClose: 7000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
+            swal('Sucesso!', data.messages, 'success');
+            setTimeout(() => {
+                swal.close();
+            }, 5000);
         } catch (err) {
             const errorMessage = handleRequestError(err);
-
-            toast.error(errorMessage, {
-                position: 'top-center',
-                autoClose: 7000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
+            await swal('Erro ao liberar acesso', errorMessage, 'error');
         } finally {
             setSubmitting(false);
             resetForm();
@@ -120,12 +103,17 @@ function FreeAccessComponent() {
                                 />
                             </div>
                             <div className="free-access-button-container">
-                                <MainBlueButton
-                                    type="submit"
-                                    disabled={isSubmitting}
-                                >
-                                    Liberar Acesso
-                                </MainBlueButton>
+                                {isSubmitting ? (
+                                    <ImSpinner2
+                                        size={40}
+                                        color="#FBCF02"
+                                        style={{ marginBottom: '0px' }}
+                                    />
+                                ) : (
+                                    <MainBlueButton type="submit">
+                                        Liberar Acesso
+                                    </MainBlueButton>
+                                )}
                             </div>
                         </form>
                     )}

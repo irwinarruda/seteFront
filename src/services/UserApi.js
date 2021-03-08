@@ -1,4 +1,10 @@
+import axios from 'axios';
+
 export const BASE_URL = 'http://sete.api';
+
+export const api = axios.create({
+    baseURL: BASE_URL,
+});
 
 export const USER_LOGIN_AUTH = (body) => {
     return {
