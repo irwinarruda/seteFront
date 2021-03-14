@@ -1,6 +1,8 @@
 import styled from 'styled-components';
+import { showIn } from '../../../styles/global';
 
 export const LeafletContainer = styled.div`
+    animation: ${showIn} 0.3s ease-in;
     width: 100%;
     height: 580px;
     padding: 0px 1px 1px 1px;

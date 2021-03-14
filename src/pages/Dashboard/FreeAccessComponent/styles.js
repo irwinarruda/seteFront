@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import { infiniteLoop } from '../../../styles/global';
+import { showIn } from '../../../styles/global';
 
 export const FreeAccessContainer = styled.div`
+    animation: ${showIn} 0.3s ease-in;
     width: 100%;
     height: 100%;
     padding: 80px 10px;

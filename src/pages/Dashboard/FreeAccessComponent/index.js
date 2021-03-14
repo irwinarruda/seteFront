@@ -26,12 +26,10 @@ function FreeAccessComponent() {
             const response = await api(FREE_ACCESS_FIREBASE(body, token));
             const data = await response.data;
             if (!data.result) {
-                throw { response };
+                await swal('Atenção!', data.messages, 'warning');
+            } else {
+                await swal('Sucesso!', data.messages, 'success');
             }
-            swal('Sucesso!', data.messages, 'success');
-            setTimeout(() => {
-                swal.close();
-            }, 5000);
         } catch (err) {
             const errorMessage = handleRequestError(err);
             await swal('Erro ao liberar acesso', errorMessage, 'error');

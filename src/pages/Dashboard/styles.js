@@ -5,7 +5,7 @@ export const Container = styled.section`
     max-width: calc(1170px + 2 * var(--padding-mobile));
     height: auto;
     padding: 0 var(--padding-mobile);
-    margin: 0 auto;
+    margin: 0 auto 0 auto;
 
     display: block;
 `;
@@ -14,7 +14,7 @@ export const BoxContainer = styled.div`
     max-width: 1030px;
     width: 100%;
     height: fit-content;
-    margin: 42px auto 0px auto;
+    margin: 42px auto 30px auto;
 
     display: flex;
     flex-direction: column;

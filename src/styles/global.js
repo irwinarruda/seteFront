@@ -27,9 +27,23 @@ export default createGlobalStyle`
         height: 100%;
         width: 100%;
         background-color: var(--color-darker-white);
+        font-size: 16px;
     }
     button {
         cursor: pointer;
+    }
+    table {
+        border: none;
+    }
+    th {
+        font-family: var(--font-primary);
+        font-size: 14px;
+
+    }
+    td {
+        font-family: var(--font-primary);
+        font-size: 14px;
+        font-weight: 300;
     }
     .swal-modal {
         border: 3px solid var(--color-dark-grey);
@@ -68,4 +82,9 @@ export default createGlobalStyle`
 export const infiniteLoop = keyframes`
     from { transform: rotate(0deg); }
     to {transform: rotate(360deg);}
+`;
+
+export const showIn = keyframes`
+    from { opacity: 0; }
+    to {opacity: 1;}
 `;
