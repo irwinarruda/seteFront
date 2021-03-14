@@ -7,6 +7,7 @@ import InfoTableIcon from '../../assets/icon/nav-info-table.svg';
 
 import LeafletComponent from './LeafletComponent';
 import FreeAccessComponent from './FreeAccessComponent';
+import TableComponent from './TableComponent';
 
 function Dashboard() {
     const [navActive, setNavActive] = React.useState('section-map-cities');
@@ -52,7 +53,7 @@ function Dashboard() {
                 {navActive === 'section-map-cities' ? (
                     <LeafletComponent />
                 ) : navActive === 'section-info-table' ? (
-                    <FreeAccessComponent />
+                    <TableComponent />
                 ) : (
                     <FreeAccessComponent />
                 )}
