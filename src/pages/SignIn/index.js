@@ -6,32 +6,35 @@ import FormikInputText from '../../components/Inputs/FormikInputText';
 import SignButton from '../../components/Buttons/SignButton';
 import SeteLogo from '../../assets/svg/sete-logo.svg';
 
-import { useAuth } from '../../context/AuthContex';
+import { useAuth } from '../../hooks/AuthContex';
+import { useAlertModal } from '../../hooks/AlertModal';
+import { useErrorHandler } from '../../hooks/Errors';
 import swal from 'sweetalert';
 import { ImSpinner2 } from 'react-icons/im';
 
 import md5 from 'md5';
-import { Formik } from 'formik';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 
 function SignIn() {
-    const { signInAsync, handleRequestError } = useAuth();
+    const { signInAsync } = useAuth();
+    const { clearModal, createModal, createModalAsync } = useAlertModal();
+    const { errorHandler } = useErrorHandler();
 
     async function handleFormikSubmit(values, { setSubmitting, resetForm }) {
         try {
             setSubmitting(true);
+            createModal();
             const body = {
-                usuario: values['email-field'],
-                senha: md5(values['password-field']),
+                usuario: values.email_field,
+                senha: md5(values.password_field),
             };
             await signInAsync(body);
-            swal('Sucesso!', 'Login feito com sucesso', 'success');
             setTimeout(() => {
-                swal.close();
+                clearModal();
             }, 2000);
         } catch (err) {
-            const errorMessage = handleRequestError(err);
-            await swal('Erro ao entrar no sistema', errorMessage, 'error');
+            errorHandler(err, { title: 'Erro ao entrar no sistema' });
         } finally {
             setSubmitting(false);
             resetForm();
@@ -45,49 +48,30 @@ function SignIn() {
                     <img src={SeteLogo} alt="Logo do SETE" />
                 </div>
                 <Formik
-                    initialValues={{ 'email-field': '', 'password-field': '' }}
+                    initialValues={{ email_field: '', password_field: '' }}
                     validationSchema={Yup.object().shape({
-                        'email-field': Yup.string()
+                        email_field: Yup.string()
                             .required('O Email deve ser preenchido')
                             .email('O valor deve ser um email válido'),
-                        'password-field': Yup.string()
+                        password_field: Yup.string()
                             .required('Deve digitar a senha')
                             .min(3, 'Senha deve ter 3 caracteres'),
                     })}
+                    validateOnBlur={true}
+                    validateOnChange={false}
                     onSubmit={handleFormikSubmit}
                 >
-                    {({
-                        values,
-                        errors,
-                        touched,
-                        handleChange,
-                        handleBlur,
-                        handleSubmit,
-                        setTouched,
-                        isSubmitting,
-                    }) => (
-                        <form onSubmit={handleSubmit}>
+                    {({ handleSubmit, isSubmitting }) => (
+                        <Form onSubmit={handleSubmit}>
                             <FormikInputText
                                 type="text"
                                 labelText="E-mail"
-                                inputId="email-field"
-                                value={values['email-field']}
-                                errors={errors['email-field']}
-                                touched={touched}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                setTouched={setTouched}
+                                name="email_field"
                             />
                             <FormikInputText
                                 type="password"
                                 labelText="Senha"
-                                inputId="password-field"
-                                value={values['password-field']}
-                                errors={errors['password-field']}
-                                touched={touched}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                setTouched={setTouched}
+                                name="password_field"
                             />
                             <div>
                                 {isSubmitting ? (
@@ -107,7 +91,7 @@ function SignIn() {
 
                                 <Link to="/registrar">Registrar</Link>
                             </div>
-                        </form>
+                        </Form>
                     )}
                 </Formik>
             </SignInContainer>

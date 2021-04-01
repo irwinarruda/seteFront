@@ -1,5 +1,6 @@
 import React from 'react';
 import { api, USER_IS_LOGED, USER_LOGIN_AUTH } from '../services/UserApi';
+import { useErrorHandler } from '../hooks/Errors';
 
 export const AuthContext = React.createContext({});
 
@@ -11,6 +12,7 @@ export function AuthProvider({ children }) {
         }
         return false;
     });
+    const { warningHandler } = useErrorHandler();
 
     const userIsLoggedAsync = async () => {
         const token = window.localStorage.getItem('@seteweb:token');
@@ -26,9 +28,7 @@ export function AuthProvider({ children }) {
     const signInAsync = async (body) => {
         const response = await api(USER_LOGIN_AUTH(body));
         const data = await response.data;
-        if (!data.result) {
-            throw { response };
-        }
+        warningHandler(data);
         if (data.access_token) {
             window.localStorage.setItem(
                 '@seteweb:token',

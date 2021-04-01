@@ -45,38 +45,6 @@ export default createGlobalStyle`
         font-size: 14px;
         font-weight: 300;
     }
-    .swal-modal {
-        border: 3px solid var(--color-dark-grey);
-    }
-    .swal-modal .swal-icon {
-        margin-top: 25px;
-    }
-    .swal-modal .swal-title {
-        font-family: var(--font-primary);
-        font-weight: 600;
-        font-size: 27px;
-        color: var(--color-black);
-    }
-    .swal-modal .swal-text {
-        font-family: var(--font-primary);
-        font-weight: 400;
-        font-size: 16px;
-    }
-    .swal-footer {
-        text-align: center;
-    }
-    .swal-footer button.swal-button--confirm {
-        background-color: var(--color-blue);
-        border-radius: 2px;
-        padding: 13px 35px;
-        transition: all 0.2s;
-        font-size: 16px;
-    }
-
-    .swal-footer button.swal-button--confirm:hover {
-        background-color: #5b718b;
-    }
-
 `;
 
 export const infiniteLoop = keyframes`
@@ -87,4 +55,9 @@ export const infiniteLoop = keyframes`
 export const showIn = keyframes`
     from { opacity: 0; }
     to {opacity: 1;}
+`;
+
+export const fromTop = keyframes`
+    from { top: -100%; }
+    to { top: 0px; }
 `;
