@@ -1,122 +1,136 @@
 import React from 'react';
-import { Formik } from 'formik';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import { FreeAccessContainer } from './styles';
+import { FreeAccessContainer, FormContainer, DarkScreen } from './styles';
+import TableComponent from './TableComponent';
 
 import FormikInputRadio from '../../../components/Inputs/FormikInputRadio';
 import FormikInputText from '../../../components/Inputs/FormikInputText';
 import MainBlueButton from '../../../components/Buttons/MainBlueButton';
 
-import { useAuth } from '../../../context/AuthContex';
-import { api, FREE_ACCESS_FIREBASE } from '../../../services/UserApi';
-import swal from 'sweetalert';
+import { useErrorHandler } from '../../../hooks/Errors';
+import { api, FREE_ACCESS_FIREBASE } from '../../../services/SeteApi';
 import { ImSpinner2 } from 'react-icons/im';
+import { BsArrowLeft } from 'react-icons/bs';
 
 function FreeAccessComponent() {
-    const { handleRequestError } = useAuth();
+    const { errorHandler, warningHandler } = useErrorHandler();
+    const formContainerRef = React.useRef(null);
+    const [modalIsOpened, setModalIsOpened] = React.useState(false);
+
+    React.useEffect(() => {
+        function handleClickOutside(event) {
+            if (
+                formContainerRef.current &&
+                !formContainerRef.current.contains(event.target)
+            ) {
+                setModalIsOpened(false);
+            }
+        }
+        window.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            window.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [formContainerRef]);
 
     async function handleFormikSubmit(values, { setSubmitting, resetForm }) {
         try {
             setSubmitting(true);
             const token = window.localStorage.getItem('@seteweb:token');
             const body = {
-                email: values.permissionEmail,
-                tipo_permissao: values.permissionCheckbox,
+                email: values.permission_email,
+                tipo_permissao: values.permission_checkbox,
             };
             const response = await api(FREE_ACCESS_FIREBASE(body, token));
             const data = await response.data;
-            if (!data.result) {
-                await swal('Atenção!', data.messages, 'warning');
-            } else {
-                await swal('Sucesso!', data.messages, 'success');
-            }
+            warningHandler(data);
         } catch (err) {
-            const errorMessage = handleRequestError(err);
-            await swal('Erro ao liberar acesso', errorMessage, 'error');
+            errorHandler(err, { text: 'Erro ao Liberar Acesso' });
         } finally {
             setSubmitting(false);
             resetForm();
         }
     }
+
+    const handleGoBackClick = React.useCallback(() => {
+        setModalIsOpened(false);
+    }, [setModalIsOpened]);
     return (
         <FreeAccessContainer>
-            <div className="free-access-content">
-                <h3>
-                    Nessa sessão você poderá liberar acesso ao software SETE dos
-                    emails solicitados à FCT.
-                </h3>
-                <Formik
-                    initialValues={{
-                        permissionEmail: '',
-                        permissionCheckbox: 'reader',
-                    }}
-                    validationSchema={Yup.object().shape({
-                        permissionEmail: Yup.string()
-                            .required('O Email deve ser preenchido')
-                            .email('O valor deve ser um email válido'),
-                    })}
-                    onSubmit={handleFormikSubmit}
-                >
-                    {({
-                        values,
-                        errors,
-                        touched,
-                        handleBlur,
-                        handleChange,
-                        handleSubmit,
-                        setTouched,
-                        setFieldValue,
-                        isSubmitting,
-                    }) => (
-                        <form onSubmit={handleSubmit}>
-                            <FormikInputText
-                                type="text"
-                                labelText="E-mail"
-                                inputId="permissionEmail"
-                                value={values.permissionEmail}
-                                errors={errors.permissionEmail}
-                                touched={touched}
-                                setTouched={setTouched}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                            <div className="free-access-radio-container">
-                                <FormikInputRadio
-                                    name="permissionCheckbox"
-                                    inputId="user-permission-reader"
-                                    labelText="Leitor"
-                                    value="reader"
-                                    checked={values.permissionCheckbox}
-                                    onChange={setFieldValue}
-                                    onBlur={handleBlur}
-                                />
-                                <FormikInputRadio
-                                    name="permissionCheckbox"
-                                    inputId="user-permission-admin"
-                                    labelText="Administrador"
-                                    value="admin"
-                                    checked={values.permissionCheckbox}
-                                    onChange={setFieldValue}
-                                    onBlur={handleBlur}
-                                />
-                            </div>
-                            <div className="free-access-button-container">
-                                {isSubmitting ? (
-                                    <ImSpinner2
-                                        size={40}
-                                        color="#FBCF02"
-                                        style={{ marginBottom: '0px' }}
+            <Formik
+                initialValues={{
+                    permission_email: '',
+                    permission_checkbox: 'reader',
+                }}
+                validationSchema={Yup.object().shape({
+                    permission_email: Yup.string()
+                        .required('O Email deve ser preenchido')
+                        .email('O valor deve ser um email válido'),
+                })}
+                onSubmit={handleFormikSubmit}
+            >
+                {({ handleSubmit, isSubmitting, values }) => (
+                    <>
+                        <TableComponent
+                            setModalIsOpened={setModalIsOpened}
+                            modalIsOpened={modalIsOpened}
+                        />
+
+                        <DarkScreen modalIsOpened={modalIsOpened}>
+                            <FormContainer
+                                modalIsOpened={modalIsOpened}
+                                ref={formContainerRef}
+                            >
+                                <div className="goback-button">
+                                    <div onClick={handleGoBackClick}>
+                                        <BsArrowLeft
+                                            size={40}
+                                            color="var(--color-black)"
+                                        />
+                                        <h4>Voltar</h4>
+                                    </div>
+                                </div>
+                                <h3>
+                                    Nessa sessão você poderá liberar acesso ao
+                                    software SETE dos emails solicitados à FCT.
+                                </h3>
+                                <Form onSubmit={handleSubmit}>
+                                    <FormikInputText
+                                        type="text"
+                                        labelText="E-mail"
+                                        name="permission_email"
                                     />
-                                ) : (
-                                    <MainBlueButton type="submit">
-                                        Liberar Acesso
-                                    </MainBlueButton>
-                                )}
-                            </div>
-                        </form>
-                    )}
-                </Formik>
-            </div>
+                                    <div className="free-access-radio-container">
+                                        <FormikInputRadio
+                                            name="permission_checkbox"
+                                            labelText="Leitor"
+                                            value="reader"
+                                        />
+                                        <FormikInputRadio
+                                            name="permission_checkbox"
+                                            labelText="Administrador"
+                                            value="admin"
+                                        />
+                                    </div>
+                                    <div className="free-access-button-container">
+                                        {isSubmitting ? (
+                                            <ImSpinner2
+                                                size={40}
+                                                color="#FBCF02"
+                                                style={{ marginBottom: '0px' }}
+                                            />
+                                        ) : (
+                                            <MainBlueButton type="submit">
+                                                Liberar Acesso
+                                            </MainBlueButton>
+                                        )}
+                                    </div>
+                                </Form>
+                            </FormContainer>
+                        </DarkScreen>
+                    </>
+                )}
+            </Formik>
         </FreeAccessContainer>
     );
 }

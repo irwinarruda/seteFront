@@ -1,26 +1,15 @@
 import React from 'react';
+import { Field } from 'formik';
 import { Label } from './styles';
 
-function InputRadio({
-    name,
-    inputId,
-    labelText,
-    value,
-    checked,
-    onChange,
-    onBlur,
-    ...props
-}) {
+function FormikInputRadio({ labelText, name, value, ...props }) {
     return (
-        <Label htmlFor={inputId}>
-            <input
+        <Label htmlFor={value}>
+            <Field
                 type="radio"
                 name={name}
-                id={inputId}
+                id={value}
                 value={value}
-                checked={value === checked}
-                onChange={() => onChange(name, value)}
-                onBlur={onBlur}
                 {...props}
             />
             <span></span>
@@ -29,4 +18,4 @@ function InputRadio({
     );
 }
 
-export default InputRadio;
+export default FormikInputRadio;

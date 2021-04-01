@@ -5,7 +5,7 @@ import {
     MainMenuHeader,
 } from './styles';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../../../context/AuthContex';
+import { useAuth } from '../../../hooks/AuthContex';
 import SeteLogoWhite from '../../../assets/svg/sete-logo-white.svg';
 
 function Menu({ children }) {

@@ -1,8 +1,15 @@
 import React from 'react';
 import { LeafletContainer } from './styles';
+import ModalComponent from './ModalComponent';
 
-import { useAuth } from '../../../context/AuthContex';
-import { api, MUNICIPIOS_GET_ALL } from '../../../services/UserApi';
+import { useAuth } from '../../../hooks/AuthContex';
+import { useAlertModal } from '../../../hooks/AlertModal';
+import { useErrorHandler } from '../../../hooks/Errors';
+import {
+    api,
+    MUNICIPIOS_GET_ALL,
+    MUNICIPIOS_GET_BY_ID,
+} from '../../../services/SeteApi';
 import swal from 'sweetalert';
 
 import Leaflet from 'leaflet';
@@ -20,7 +27,11 @@ function LeafletComponent() {
     const [position, setPosition] = React.useState([-15.75, -47.95]);
     const [mapZoom, setMapZoom] = React.useState(4);
     const [markers, setMarkers] = React.useState([]);
-    const { signOut, handleRequestError } = useAuth();
+    const [modalIsOpened, setModalIsOpened] = React.useState(false);
+    const [modalObj, setModalObj] = React.useState({});
+    const { signOut } = useAuth();
+    const { createModal, clearModal } = useAlertModal();
+    const { errorHandler } = useErrorHandler();
 
     React.useEffect(() => {
         async function getAllCities() {
@@ -33,15 +44,33 @@ function LeafletComponent() {
                 }
                 setMarkers(data.data);
             } catch (err) {
-                const errorMessage = handleRequestError(err);
-                await swal('Erro ao carregar o mapa', errorMessage, 'error');
+                errorHandler(err, { title: 'Erro ao carregar o mapa' });
             }
         }
         getAllCities();
-    }, [signOut, handleRequestError]);
+    }, [signOut]);
+
+    const handleMarkerClick = React.useCallback(
+        async (event, item) => {
+            try {
+                const token = window.localStorage.getItem('@seteweb:token');
+                const response = await api(
+                    MUNICIPIOS_GET_BY_ID(item.codigo_municipio, token),
+                );
+                const data = await response.data;
+                setModalObj(data);
+                setModalIsOpened(true);
+            } catch (err) {
+                errorHandler(err, {
+                    title: 'Erro ao Buscar dados do município',
+                });
+            }
+        },
+        [setModalIsOpened],
+    );
 
     return (
-        <LeafletContainer>
+        <LeafletContainer modalIsOpened={modalIsOpened}>
             <MapContainer
                 className="mapview"
                 center={position}
@@ -63,8 +92,12 @@ function LeafletComponent() {
                                   ]}
                                   icon={mapPinIcon}
                                   key={index}
+                                  eventHandlers={{
+                                      click: (event) =>
+                                          handleMarkerClick(event, item),
+                                  }}
                               >
-                                  <Popup>
+                                  <Popup onClick={handleMarkerClick}>
                                       {item.nome_cidade}-{item.uf}
                                   </Popup>
                               </Marker>
@@ -72,6 +105,12 @@ function LeafletComponent() {
                       })
                     : null}
             </MapContainer>
+            <ModalComponent
+                modalIsOpened={modalIsOpened}
+                setModalIsOpened={setModalIsOpened}
+                modalObj={modalObj}
+                setModalObj={setModalObj}
+            />
         </LeafletContainer>
     );
 }

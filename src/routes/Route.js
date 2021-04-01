@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContex';
+import { AuthContext } from '../hooks/AuthContex';
 import Menu from '../pages/_layouts/menu';
 import Sign from '../pages/_layouts/sign';
 
