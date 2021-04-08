@@ -66,6 +66,18 @@ export const TableContainer = styled.div`
     }
 `;
 
+export const SearchContainer = styled.div`
+    max-width: 330px;
+    width: 100%;
+    margin: 0px auto 10px 0px;
+    & > div {
+        label {
+            font-size: 18px;
+            margin-right: 20px;
+        }
+    }
+`;
+
 export const PaginationContainer = styled.div`
     width: 100%;
     margin-top: 30px;
@@ -97,7 +109,7 @@ export const PaginationContainer = styled.div`
         }
 
         &:hover {
-            background-color: #eec91d;
+            background-color: #fac400;
         }
     }
 

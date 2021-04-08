@@ -1,5 +1,10 @@
 import React from 'react';
-import { Container, TableContainer, PaginationContainer } from './styles';
+import {
+    Container,
+    TableContainer,
+    PaginationContainer,
+    SearchContainer,
+} from './styles';
 import { useTable, useSortBy, usePagination } from 'react-table';
 import { ReactSVG } from 'react-svg';
 import { MdSkipNext, MdSkipPrevious } from 'react-icons/md';
@@ -10,12 +15,13 @@ import {
     IoMdArrowDropleft,
 } from 'react-icons/io';
 
-import YellowButton from '../../../../components/Buttons/YellowButton';
-
 import { useFormikContext } from 'formik';
 
-import { useErrorHandler } from '../../../../hooks/Errors';
+import debounce from 'lodash.debounce';
+
 import Spinner from '../../../../assets/svg/spinner.svg';
+import TableSearchInput from '../../../../components/Inputs/TableSearchInput';
+import YellowButton from '../../../../components/Buttons/YellowButton';
 
 function Datatable({
     modalIsOpened,
@@ -25,9 +31,26 @@ function Datatable({
     loading,
     fetchData,
     pageCount: controlledPageCount,
+    setLoading,
 }) {
-    const { errorHandler } = useErrorHandler();
     const { setFieldValue } = useFormikContext();
+
+    const handleRowClick = React.useCallback(
+        (email) => {
+            setFieldValue('permission_email', email);
+            setModalIsOpened(true);
+        },
+        [setFieldValue, setModalIsOpened],
+    );
+
+    const handleManualyFreeButtonClick = React.useCallback(() => {
+        setFieldValue('permission_email', '');
+        setModalIsOpened(true);
+    }, [setFieldValue, setModalIsOpened]);
+
+    const [reqParams, setReqParams] = React.useState({
+        busca: '',
+    });
 
     const {
         getTableProps,
@@ -56,25 +79,35 @@ function Datatable({
         usePagination,
     );
 
-    const handleRowClick = React.useCallback(
-        (email) => {
-            setFieldValue('permission_email', email);
-            setModalIsOpened(true);
-        },
-        [setFieldValue, setModalIsOpened],
+    const debouncedSave = React.useCallback(
+        debounce((debouncedValue) => {
+            gotoPage(0);
+            setReqParams({ busca: debouncedValue });
+        }, 300),
+        [setReqParams],
     );
 
-    const handleManualyFreeButtonClick = React.useCallback(() => {
-        setFieldValue('permission_email', '');
-        setModalIsOpened(true);
-    }, [setFieldValue, setModalIsOpened]);
+    const handleInputChange = React.useCallback(
+        (event) => {
+            setLoading(true);
+            debouncedSave(event.target.value);
+        },
+        [setLoading],
+    );
 
     React.useEffect(() => {
-        fetchData(pageIndex);
-    }, [fetchData, pageIndex]);
+        fetchData(pageIndex, reqParams);
+    }, [fetchData, pageIndex, reqParams]);
 
     return (
         <Container>
+            <SearchContainer>
+                <TableSearchInput
+                    labelText="Buscar:"
+                    name="table_search"
+                    onChange={handleInputChange}
+                />
+            </SearchContainer>
             <TableContainer>
                 <table {...getTableProps()}>
                     <thead>

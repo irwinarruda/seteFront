@@ -1,7 +1,7 @@
 import React from 'react';
 import { InputContainer, Label, Input } from './styles';
 
-function InputText({ labelText, inputId, value, setValue, ...props }) {
+function InputText({ labelText, name, value, setValue, ...props }) {
     const handleInputTextChange = React.useCallback(
         (event) => {
             setValue(event.target.value);
@@ -11,10 +11,11 @@ function InputText({ labelText, inputId, value, setValue, ...props }) {
 
     return (
         <InputContainer>
-            <Label htmlFor={inputId}>{labelText}</Label>
+            <Label htmlFor={name}>{labelText}</Label>
             <Input
                 {...props}
-                id={inputId}
+                id={name}
+                name={name}
                 value={value}
                 onChange={handleInputTextChange}
             />

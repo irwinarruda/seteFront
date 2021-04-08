@@ -1,5 +1,10 @@
 import React from 'react';
-import { Container, TableContainer, PaginationContainer } from './styles';
+import {
+    Container,
+    TableContainer,
+    PaginationContainer,
+    SearchContainer,
+} from './styles';
 import { useTable, useSortBy, usePagination } from 'react-table';
 import { ReactSVG } from 'react-svg';
 import { MdSkipNext, MdSkipPrevious } from 'react-icons/md';
@@ -9,15 +14,23 @@ import {
     IoMdArrowDropright,
     IoMdArrowDropleft,
 } from 'react-icons/io';
-import Spinner from '../../../../assets/svg/spinner.svg';
+import debounce from 'lodash.debounce';
 
-function Datatable({
+import Spinner from '../../../../assets/svg/spinner.svg';
+import TableSearchInput from '../../../../components/Inputs/TableSearchInput';
+
+function TableComponent({
     columns,
     data,
     loading,
     fetchData,
     pageCount: controlledPageCount,
+    setLoading,
 }) {
+    const [reqParams, setReqParams] = React.useState({
+        tipo: 'lista',
+        busca: '',
+    });
     const {
         getTableProps,
         getTableBodyProps,
@@ -45,12 +58,32 @@ function Datatable({
         usePagination,
     );
 
+    const debouncedSave = React.useCallback(
+        debounce((debouncedValue) => {
+            gotoPage(0);
+            setReqParams((prev) => ({ ...prev, busca: debouncedValue }));
+        }, 300),
+        [setReqParams],
+    );
+
+    const handleInputChange = React.useCallback((event) => {
+        setLoading(true);
+        debouncedSave(event.target.value);
+    });
+
     React.useEffect(() => {
-        fetchData(pageIndex);
-    }, [fetchData, pageIndex]);
+        fetchData(pageIndex, reqParams);
+    }, [fetchData, pageIndex, reqParams]);
 
     return (
         <Container>
+            <SearchContainer>
+                <TableSearchInput
+                    labelText="Buscar:"
+                    name="table_search"
+                    onChange={handleInputChange}
+                />
+            </SearchContainer>
             <TableContainer>
                 <table {...getTableProps()}>
                     <thead>
@@ -108,7 +141,7 @@ function Datatable({
                 </table>
             </TableContainer>
             {loading && <ReactSVG src={Spinner} />}
-            <div>
+            <PaginationContainer>
                 <div className="pagination-back">
                     <button
                         onClick={() => gotoPage(0)}
@@ -146,9 +179,9 @@ function Datatable({
                         <MdSkipNext size={24} color="var(--color-white)" />
                     </button>
                 </div>
-            </div>
+            </PaginationContainer>
         </Container>
     );
 }
 
-export default Datatable;
+export default TableComponent;

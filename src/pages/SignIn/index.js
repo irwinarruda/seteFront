@@ -18,7 +18,7 @@ import * as Yup from 'yup';
 
 function SignIn() {
     const { signInAsync } = useAuth();
-    const { clearModal, createModal, createModalAsync } = useAlertModal();
+    const { clearModal, createModal } = useAlertModal();
     const { errorHandler } = useErrorHandler();
 
     async function handleFormikSubmit(values, { setSubmitting, resetForm }) {
@@ -89,7 +89,7 @@ function SignIn() {
                                     </SignButton>
                                 )}
 
-                                <Link to="/registrar">Registrar</Link>
+                                {/* <Link to="/registrar">Registrar</Link> */}
                             </div>
                         </Form>
                     )}

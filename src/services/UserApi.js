@@ -13,7 +13,7 @@ export const USER_LOGIN_AUTH = (body) => {
             'Content-Type': 'application/json',
         },
         url: '/authenticator',
-        data: JSON.stringify(body),
+        data: body,
     };
 };
 
