@@ -14,6 +14,7 @@ export const LeafletContainer = styled.div`
         position: relative;
         z-index: 1;
         border-radius: 0px 0px 10px 10px;
+        padding-bottom: 20px;
         width: 100%;
         height: 580px;
         transition: all 0.2s linear;
@@ -24,11 +25,11 @@ export const LeafletContainer = styled.div`
                 filter: blur(8px);
 
                 @media (max-width: 700px) {
-                    height: 620px;
+                    height: 650px;
                 }
 
                 @media (max-width: 454px) {
-                    height: 675px;
+                    height: 730px;
                 }
             `}
     }

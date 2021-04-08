@@ -6,7 +6,7 @@ export const FreeAccessContainer = styled.div`
     animation: ${showIn} 0.3s ease-in;
     width: 100%;
     height: 100%;
-    padding: 10px 10px;
+    padding: 20px;
     position: relative;
     overflow: hidden;
 
@@ -150,7 +150,7 @@ export const FormContainer = styled.div`
         }
     }
 
-    /* @media (max-width: 745px) {
+    @media (max-width: 745px) {
         max-width: 450px;
         padding: 70px 30px;
     }
@@ -163,5 +163,5 @@ export const FormContainer = styled.div`
     @media (max-width: 400px) {
         max-width: 250px;
         padding: 50px 10px;
-    } */
+    }
 `;

@@ -44,25 +44,17 @@ export const TableContainer = styled.div`
 
     tbody {
         tr {
-            cursor: pointer;
             transition: all 0.05s linear;
             & + tr {
                 border-top: 1px solid #e6e6e6;
+            }
+            &:hover {
+                background-color: #e5e5e5;
             }
             &:nth-child(odd) {
                 background: #f8f8f8;
                 &:hover {
                     background-color: #e5e5e5;
-                }
-            }
-            &:hover {
-                background-color: #e5e5e5;
-                td {
-                    &:nth-child(2) {
-                        background-color: #fbcf02;
-                        color: var(--color-white);
-                        font-weight: 500;
-                    }
                 }
             }
         }
@@ -143,10 +135,4 @@ export const PaginationContainer = styled.div`
 
 export const Container = styled.div`
     width: 100%;
-
-    .button-container {
-        margin: 30px auto 0px auto;
-        max-width: 500px;
-        width: 100%;
-    }
 `;

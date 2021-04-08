@@ -9,14 +9,31 @@ import FormikInputText from '../../../components/Inputs/FormikInputText';
 import MainBlueButton from '../../../components/Buttons/MainBlueButton';
 
 import { useErrorHandler } from '../../../hooks/Errors';
-import { api, FREE_ACCESS_FIREBASE } from '../../../services/SeteApi';
+import { useAlertModal } from '../../../hooks/AlertModal';
+import {
+    api,
+    FREE_ACCESS_FIREBASE,
+    FREE_ACCESS_FIREBASE_LIST,
+} from '../../../services/SeteApi';
+import {
+    freeAccessTableColumns,
+    freeAccessTableDataHandle,
+} from '../../../helpers/tableHelpers';
+
 import { ImSpinner2 } from 'react-icons/im';
 import { BsArrowLeft } from 'react-icons/bs';
 
 function FreeAccessComponent() {
     const { errorHandler, warningHandler } = useErrorHandler();
+    const { createModal, clearModal } = useAlertModal();
     const formContainerRef = React.useRef(null);
+
     const [modalIsOpened, setModalIsOpened] = React.useState(false);
+    const [tableData, setTableData] = React.useState([]);
+    const [pageCount, setPageCount] = React.useState(0);
+    const [loading, setLoading] = React.useState(false);
+    const columns = React.useMemo(() => freeAccessTableColumns, []);
+    const fetchIdRef = React.useRef(0);
 
     React.useEffect(() => {
         function handleClickOutside(event) {
@@ -35,6 +52,7 @@ function FreeAccessComponent() {
 
     async function handleFormikSubmit(values, { setSubmitting, resetForm }) {
         try {
+            createModal();
             setSubmitting(true);
             const token = window.localStorage.getItem('@seteweb:token');
             const body = {
@@ -44,9 +62,11 @@ function FreeAccessComponent() {
             const response = await api(FREE_ACCESS_FIREBASE(body, token));
             const data = await response.data;
             warningHandler(data);
+            getFreeAccessData(0);
         } catch (err) {
             errorHandler(err, { text: 'Erro ao Liberar Acesso' });
         } finally {
+            clearModal();
             setSubmitting(false);
             resetForm();
         }
@@ -55,6 +75,32 @@ function FreeAccessComponent() {
     const handleGoBackClick = React.useCallback(() => {
         setModalIsOpened(false);
     }, [setModalIsOpened]);
+
+    const getFreeAccessData = React.useCallback(
+        async (pageIndex) => {
+            try {
+                setLoading(true);
+                const fetchId = ++fetchIdRef.current;
+                const token = window.localStorage.getItem('@seteweb:token');
+                const response = await api(
+                    FREE_ACCESS_FIREBASE_LIST(token, {
+                        pagina: pageIndex + 1,
+                    }),
+                );
+                if (fetchId !== fetchIdRef.current) return;
+                const dataRaw = await response.data;
+                const data = freeAccessTableDataHandle(dataRaw.registros);
+                setPageCount(dataRaw.pages);
+                setTableData(data);
+            } catch (err) {
+                errorHandler(err, { title: 'Errro ao pegar dados' });
+            } finally {
+                setLoading(false);
+            }
+        },
+        [setTableData, setPageCount, setLoading, fetchIdRef],
+    );
+
     return (
         <FreeAccessContainer>
             <Formik
@@ -69,11 +115,16 @@ function FreeAccessComponent() {
                 })}
                 onSubmit={handleFormikSubmit}
             >
-                {({ handleSubmit, isSubmitting, values }) => (
+                {({ handleSubmit, isSubmitting }) => (
                     <>
                         <TableComponent
                             setModalIsOpened={setModalIsOpened}
                             modalIsOpened={modalIsOpened}
+                            fetchData={getFreeAccessData}
+                            columns={columns}
+                            data={tableData}
+                            loading={loading}
+                            pageCount={pageCount}
                         />
 
                         <DarkScreen modalIsOpened={modalIsOpened}>

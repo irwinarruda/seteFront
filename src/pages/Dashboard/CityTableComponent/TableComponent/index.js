@@ -9,26 +9,15 @@ import {
     IoMdArrowDropright,
     IoMdArrowDropleft,
 } from 'react-icons/io';
-
-import YellowButton from '../../../../components/Buttons/YellowButton';
-
-import { useFormikContext } from 'formik';
-
-import { useErrorHandler } from '../../../../hooks/Errors';
 import Spinner from '../../../../assets/svg/spinner.svg';
 
 function Datatable({
-    modalIsOpened,
-    setModalIsOpened,
     columns,
     data,
     loading,
     fetchData,
     pageCount: controlledPageCount,
 }) {
-    const { errorHandler } = useErrorHandler();
-    const { setFieldValue } = useFormikContext();
-
     const {
         getTableProps,
         getTableBodyProps,
@@ -55,19 +44,6 @@ function Datatable({
         useSortBy,
         usePagination,
     );
-
-    const handleRowClick = React.useCallback(
-        (email) => {
-            setFieldValue('permission_email', email);
-            setModalIsOpened(true);
-        },
-        [setFieldValue, setModalIsOpened],
-    );
-
-    const handleManualyFreeButtonClick = React.useCallback(() => {
-        setFieldValue('permission_email', '');
-        setModalIsOpened(true);
-    }, [setFieldValue, setModalIsOpened]);
 
     React.useEffect(() => {
         fetchData(pageIndex);
@@ -114,13 +90,7 @@ function Datatable({
                             page.map((row, index) => {
                                 prepareRow(row);
                                 return (
-                                    <tr
-                                        {...row.getRowProps()}
-                                        key={index}
-                                        onClick={() =>
-                                            handleRowClick(row.cells[1].value)
-                                        }
-                                    >
+                                    <tr {...row.getRowProps()} key={index}>
                                         {row.cells.map((cell, index) => {
                                             return (
                                                 <td
@@ -138,7 +108,7 @@ function Datatable({
                 </table>
             </TableContainer>
             {loading && <ReactSVG src={Spinner} />}
-            <PaginationContainer>
+            <div>
                 <div className="pagination-back">
                     <button
                         onClick={() => gotoPage(0)}
@@ -176,11 +146,6 @@ function Datatable({
                         <MdSkipNext size={24} color="var(--color-white)" />
                     </button>
                 </div>
-            </PaginationContainer>
-            <div className="button-container">
-                <YellowButton onClick={handleManualyFreeButtonClick}>
-                    Liberar Manualmente
-                </YellowButton>
             </div>
         </Container>
     );
