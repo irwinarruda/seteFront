@@ -10,7 +10,6 @@ import {
     MUNICIPIOS_GET_ALL,
     MUNICIPIOS_GET_BY_ID,
 } from '../../../services/SeteApi';
-import swal from 'sweetalert';
 
 import Leaflet from 'leaflet';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';

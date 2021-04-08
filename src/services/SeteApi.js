@@ -6,13 +6,14 @@ export const api = axios.create({
     baseURL: BASE_URL,
 });
 
-export const MUNICIPIOS_GET_ALL = (token) => {
+export const MUNICIPIOS_GET_ALL = (token, params = {}) => {
     return {
         method: 'get',
         headers: {
             Authorization: token,
         },
         url: '/municipios',
+        params: params,
     };
 };
 
