@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { DebounceInput } from 'react-debounce-input';
 
 export const InputContainer = styled.div`
     width: 100%;
