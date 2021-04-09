@@ -38,7 +38,7 @@ export function useAlertModal() {
             ...alertTypes[type || 'loading'],
             ...options,
         };
-        await swal(swalObject);
+        return await swal(swalObject);
     });
     const clearModal = React.useCallback(() => {
         swal.close();
@@ -100,6 +100,35 @@ export const AlertModalStyles = createGlobalStyle`
         }
         & > .swal-footer {
             display: none;
+        }
+    }
+
+    .swal-buttons {
+        & > .swal-footer {
+            .swal-button-container {
+                button {
+                    border-radius: 2px;
+                    padding: 13px 35px;
+                    transition: all 0.2s;
+                    font-size: 16px;
+                }
+                &:first-child {
+                    button {
+                        background-color: var(--color-red);
+                        &:hover {
+                            background-color: #FD2A2A;
+                        }
+                    }
+                }
+                &:last-child {
+                    button {
+                        background-color: #00F453;
+                        &:hover {
+                            background-color: #04CA47;
+                        }
+                    }
+                }
+            }
         }
     }
 

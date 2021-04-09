@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { showIn } from '../../../../styles/global';
 
 export const TableContainer = styled.div`
     width: 100%;
@@ -105,7 +106,7 @@ export const PaginationContainer = styled.div`
         }
 
         &:hover {
-            background-color: #eec91d;
+            background-color: #fac400;
         }
     }
 
@@ -141,8 +142,21 @@ export const PaginationContainer = styled.div`
     }
 `;
 
+export const SearchContainer = styled.div`
+    max-width: 330px;
+    width: 100%;
+    margin: 0px auto 10px 0px;
+    & > div {
+        label {
+            font-size: 18px;
+            margin-right: 20px;
+        }
+    }
+`;
+
 export const Container = styled.div`
     width: 100%;
+    animation: ${showIn} 0.2s linear;
 
     .button-container {
         margin: 30px auto 0px auto;
