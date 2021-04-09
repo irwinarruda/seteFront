@@ -67,7 +67,7 @@ export const AlertModalStyles = createGlobalStyle`
 
         & > .swal-footer {
             text-align: center;
-            button.swal-button--confirm {
+            button {
                 background-color: var(--color-blue);
                 border-radius: 2px;
                 padding: 13px 35px;
@@ -117,14 +117,6 @@ export const AlertModalStyles = createGlobalStyle`
                         background-color: var(--color-red);
                         &:hover {
                             background-color: #FD2A2A;
-                        }
-                    }
-                }
-                &:last-child {
-                    button {
-                        background-color: #00F453;
-                        &:hover {
-                            background-color: #04CA47;
                         }
                     }
                 }

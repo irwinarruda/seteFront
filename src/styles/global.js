@@ -7,6 +7,9 @@ export default createGlobalStyle`
         --color-yellow: #E4C949;
         --color-dark-yellow: #FBCF02;
         --color-blue: #5E7B9E;
+        --color-dark-blue: #5b718b;
+        --color-green: #00F453;
+        --color-dark-green: #04CA47;
         --color-darker-white: #F4F4F4;
         --color-bg-white: #FAFAFA;
         --color-white: #FFFFFF;

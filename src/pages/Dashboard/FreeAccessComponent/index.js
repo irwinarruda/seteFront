@@ -34,7 +34,7 @@ function FreeAccessComponent() {
                 tipo_permissao: values.permission_checkbox,
             };
             const modalCheck = await createModalAsync('warning', {
-                title: 'Tem certeza que deseja liberar acesso para:',
+                title: 'Deseja liberar acesso para:',
                 text: body.email,
                 buttons: {
                     no: {
