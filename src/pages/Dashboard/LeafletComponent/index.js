@@ -52,6 +52,7 @@ function LeafletComponent() {
     const handleMarkerClick = React.useCallback(
         async (event, item) => {
             try {
+                document.querySelector('html').style.cursor = 'progress';
                 const token = window.localStorage.getItem('@seteweb:token');
                 const response = await api(
                     MUNICIPIOS_GET_BY_ID(item.codigo_municipio, token),
@@ -63,6 +64,8 @@ function LeafletComponent() {
                 errorHandler(err, {
                     title: 'Erro ao Buscar dados do município',
                 });
+            } finally {
+                document.querySelector('html').style.cursor = 'default';
             }
         },
         [setModalIsOpened],
