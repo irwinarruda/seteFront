@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const BASE_URL = 'http://sete.api';
+export const BASE_URL = 'http://seteapi.umarleyricardo.eti.br';
 
 export const api = axios.create({
     baseURL: BASE_URL,
