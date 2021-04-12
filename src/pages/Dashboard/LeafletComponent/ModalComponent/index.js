@@ -48,17 +48,17 @@ function ModalComponent({
                         <div>
                             <p>Alunos Atendido</p>
                             <ReactSVG src={StudentsNumber} />
-                            <h4>{modalObj.data?.n_alunos}</h4>
+                            <h4>{modalObj?.data?.n_alunos}</h4>
                         </div>
                         <div>
                             <p>Escolas Atendidas</p>
                             <ReactSVG src={SchoolsNumber} />
-                            <h4>{modalObj.data?.n_escolas}</h4>
+                            <h4>{modalObj?.data?.n_escolas}</h4>
                         </div>
                         <div>
                             <p>Veículos em Funcionamento</p>
                             <ReactSVG src={WorkingBus} />
-                            <h4>{modalObj.data?.n_veiculos_funcionamento}</h4>
+                            <h4>{modalObj?.data?.n_veiculos_funcionamento}</h4>
                         </div>
                         <div>
                             <p>Veículos em Manutenção</p>
@@ -69,7 +69,7 @@ function ModalComponent({
                         <div>
                             <p>Quantidade de Rotas</p>
                             <ReactSVG src={RoutesNumber} />
-                            <h4>{modalObj.data?.n_rotas}</h4>
+                            <h4>{modalObj?.data?.n_rotas}</h4>
                         </div>
                         <div>
                             <p>Quilometragem Total</p>
@@ -77,7 +77,7 @@ function ModalComponent({
                             <h4>
                                 {Math.round(
                                     Number(
-                                        modalObj.data
+                                        modalObj?.data
                                             ?.n_rotas_kilometragem_total || '0',
                                     ),
                                 )}
@@ -85,12 +85,12 @@ function ModalComponent({
                             </h4>
                         </div>
                         <div>
-                            <p>Tempo Médio das Rotas</p>
+                            <p>Quilometragem Média das Rotas</p>
                             <ReactSVG src={KmMean} />
                             <h4>
                                 {Math.round(
                                     Number(
-                                        modalObj.data
+                                        modalObj?.data
                                             ?.n_rotas_kilometragem_media || '0',
                                     ),
                                 )}
@@ -98,10 +98,15 @@ function ModalComponent({
                             </h4>
                         </div>
                         <div>
-                            <p>Veículos em Manutenção</p>
+                            <p>Tempo Médio das Rotas</p>
                             <ReactSVG src={RoutesTime} />
                             <h4>
-                                {Number(modalObj.data?.n_veiculos_manutencao)}
+                                {Math.round(
+                                    Number(
+                                        modalObj?.data?.n_tempo_medio_rota ||
+                                            '0',
+                                    ),
+                                )}
                                 {' min'}
                             </h4>
                         </div>

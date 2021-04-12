@@ -34,4 +34,10 @@ export const Input = styled.input`
     font-size: 17px;
     font-weight: 300;
     font-family: var(--font-primary);
+
+    transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+
+    &:focus {
+        border-color: var(--color-dark-yellow);
+    }
 `;

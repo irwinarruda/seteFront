@@ -4,12 +4,15 @@ import {
     MUNICIPIOS_GET_ALL,
     FREE_ACCESS_FIREBASE_LIST,
 } from '../services/SeteApi';
+import { USERS_LIST } from '../services/UserApi';
 import { useErrorHandler } from './Errors';
 import {
     cityTableColumns,
     cityTableDataHandle,
     freeAccessTableColumns,
     freeAccessTableDataHandle,
+    userListTableColumns,
+    userListTableDataHandle,
 } from '../helpers/tableHelpers';
 
 export const tableTypes = {
@@ -22,6 +25,11 @@ export const tableTypes = {
         apiReq: FREE_ACCESS_FIREBASE_LIST,
         tableColumns: freeAccessTableColumns,
         tableData: freeAccessTableDataHandle,
+    },
+    user_list: {
+        apiReq: USERS_LIST,
+        tableColumns: userListTableColumns,
+        tableData: userListTableDataHandle,
     },
 };
 

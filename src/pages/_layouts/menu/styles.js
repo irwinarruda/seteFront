@@ -44,9 +44,10 @@ export const MainMenuHeader = styled.div`
 
             li {
                 a {
+                    user-select: none;
                     color: var(--color-white);
                     font-family: var(--font-primary);
-                    font-size: 22px;
+                    font-size: 20px;
                     font-weight: 600;
                     text-decoration: none;
 
@@ -54,6 +55,12 @@ export const MainMenuHeader = styled.div`
                     &:hover {
                         color: #b4b4b4;
                     }
+                    &.menu-active {
+                        color: #b4b4b4;
+                    }
+                }
+                & + li {
+                    margin-left: 30px;
                 }
             }
         }

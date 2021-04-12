@@ -9,7 +9,6 @@ import SeteLogo from '../../assets/svg/sete-logo.svg';
 import { useAuth } from '../../hooks/AuthContex';
 import { useAlertModal } from '../../hooks/AlertModal';
 import { useErrorHandler } from '../../hooks/Errors';
-import swal from 'sweetalert';
 import { ImSpinner2 } from 'react-icons/im';
 
 import md5 from 'md5';
@@ -89,7 +88,7 @@ function SignIn() {
                                     </SignButton>
                                 )}
 
-                                {/* <Link to="/registrar">Registrar</Link> */}
+                                <Link to="/registrar">Registrar</Link>
                             </div>
                         </Form>
                     )}
