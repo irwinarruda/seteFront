@@ -87,8 +87,6 @@ function SignIn() {
                                         Entrar
                                     </SignButton>
                                 )}
-
-                                <Link to="/registrar">Registrar</Link>
                             </div>
                         </Form>
                     )}
