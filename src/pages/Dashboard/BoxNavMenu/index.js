@@ -11,33 +11,33 @@ function BoxNavMenu({ navActive, setNavActive }) {
         <Container>
             <div
                 className={`box-nav-button${
-                    navActive === 'section-map-cities'
+                    navActive === 'section_map_cities'
                         ? ' box-nav-button-active'
                         : ''
                 }`}
-                onClick={() => setNavActive('section-map-cities')}
+                onClick={() => setNavActive('section_map_cities')}
             >
                 <ReactSVG src={MapIcon} />
                 <h2>MAPA SETE</h2>
             </div>
             <div
                 className={`box-nav-button${
-                    navActive === 'section-info-table'
+                    navActive === 'section_info_table'
                         ? ' box-nav-button-active'
                         : ''
                 }`}
-                onClick={() => setNavActive('section-info-table')}
+                onClick={() => setNavActive('section_info_table')}
             >
                 <ReactSVG src={InfoTableIcon} />
                 <h2>TABELA</h2>
             </div>
             <div
                 className={`box-nav-button${
-                    navActive === 'section-free-access'
+                    navActive === 'section_free_access'
                         ? ' box-nav-button-active'
                         : ''
                 }`}
-                onClick={() => setNavActive('section-free-access')}
+                onClick={() => setNavActive('section_free_access')}
             >
                 <ReactSVG src={FreeAccessIcon} />
                 <h2>LIBERAR ACESSO</h2>

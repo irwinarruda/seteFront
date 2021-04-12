@@ -4,7 +4,7 @@ export const ButtonContainer = styled.button`
     display: block;
     text-align: center;
     width: 100%;
-    padding: 8px 0px;
+    padding: 9px 0px;
     border: none;
     background-color: #5e7b9e;
     transition: all 0.2s;

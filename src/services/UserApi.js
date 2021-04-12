@@ -26,3 +26,38 @@ export const USER_IS_LOGED = (token) => {
         url: '/authenticator',
     };
 };
+
+export const USER_CREATE = (body, token) => {
+    return {
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: token,
+        },
+        url: '/users/api',
+        data: body,
+    };
+};
+
+export const USER_UPDATE = (body, token, user_id) => {
+    return {
+        method: 'put',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: token,
+        },
+        url: `/users/api/${user_id}`,
+        data: body,
+    };
+};
+
+export const USERS_LIST = (token, params = {}) => {
+    return {
+        method: 'get',
+        headers: {
+            Authorization: token,
+        },
+        url: '/users/api',
+        params: params,
+    };
+};

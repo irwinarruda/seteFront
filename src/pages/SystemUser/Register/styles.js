@@ -11,24 +11,27 @@ export const Container = styled.div`
 `;
 
 export const SignUpContainer = styled.div`
-    max-width: 470px;
+    max-width: 600px;
     width: 100%;
     padding: 5px 50px 50px 50px;
-    margin: 30px 0px;
-
-    background-color: #f4f4f4;
-    box-shadow: 0px 0px 20px 2px rgba(0, 0, 0, 0.25);
-    border-radius: 5px;
+    margin: 30px auto 0px auto;
 
     & > div {
-        width: 100%;
-        text-align: center;
-        img {
-            width: 70%;
+        & > h3 {
+            width: 100%;
+            display: block;
+            margin-top: 10px;
+
+            font-family: var(--font-primary);
+            font-weight: 400;
+            color: var(--color-black);
         }
     }
 
     & > form > div {
+        max-width: 410px;
+        width: 100%;
+        margin: 40px auto 0px auto;
         & + div {
             margin-top: 10px;
         }
@@ -39,16 +42,6 @@ export const SignUpContainer = styled.div`
             align-items: center;
             justify-content: center;
             flex-direction: column;
-
-            a {
-                text-decoration: underline;
-                margin-top: 7px;
-
-                color: #383a3a;
-                font-family: 'Roboto', sans-serif;
-                font-size: 16px;
-                font-weight: 400;
-            }
         }
     }
 

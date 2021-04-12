@@ -66,3 +66,29 @@ export const freeAccessTableDataHandle = (arr) => {
         return itemData;
     });
 };
+
+export const userListTableColumns = [
+    {
+        Header: 'Ativo',
+        accessor: 'is_ativo',
+    },
+    {
+        Header: 'Nome',
+        accessor: 'nome',
+    },
+    {
+        Header: 'E-mail',
+        accessor: 'email',
+    },
+];
+
+export const userListTableDataHandle = (arr) => {
+    return arr.map((item) => {
+        let itemData = {
+            nome: item.nome,
+            email: item.email,
+            is_ativo: item.is_ativo,
+        };
+        return itemData;
+    });
+};

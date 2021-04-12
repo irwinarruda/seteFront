@@ -15,6 +15,7 @@ export const SignInContainer = styled.div`
     max-width: 470px;
     width: 100%;
     padding: 5px 50px 50px 50px;
+    margin: 30px 0px;
 
     background-color: #f4f4f4;
     box-shadow: 0px 0px 20px 2px rgba(0, 0, 0, 0.25);
@@ -59,7 +60,7 @@ export const SignInContainer = styled.div`
     @media (max-width: 500px) {
         padding: 5px 30px 50px 30px;
     }
-    @media (max-width: 350px) {
+    @media (max-width: 400px) {
         padding: 5px 15px 50px 15px;
     }
 `;

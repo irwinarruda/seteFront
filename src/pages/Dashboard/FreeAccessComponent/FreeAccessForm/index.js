@@ -30,7 +30,7 @@ function FreeAccessForm({
                     </div>
                 </div>
                 <h3>
-                    Nessa sessão você poderá liberar acesso ao software SETE dos
+                    Nessa seção você poderá liberar acesso ao software SETE dos
                     emails solicitados à FCT.
                 </h3>
                 <Form onSubmit={handleSubmit}>

@@ -4,7 +4,7 @@ import {
     MainMenuHeaderContainer,
     MainMenuHeader,
 } from './styles';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { useAuth } from '../../../hooks/AuthContex';
 import SeteLogoWhite from '../../../assets/svg/sete-logo-white.svg';
 
@@ -22,6 +22,24 @@ function Menu({ children }) {
                     </Link>
                     <nav>
                         <ul>
+                            <li>
+                                <NavLink
+                                    to="/dashboard"
+                                    activeClassName="menu-active"
+                                    exact
+                                >
+                                    Dashboard
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink
+                                    to="/usuarios"
+                                    activeClassName="menu-active"
+                                    exact
+                                >
+                                    Usuários
+                                </NavLink>
+                            </li>
                             <li>
                                 <Link to="/" onClick={handleLogoutClick}>
                                     Sair
