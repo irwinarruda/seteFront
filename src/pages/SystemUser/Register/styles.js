@@ -1,16 +1,8 @@
 import styled from 'styled-components';
-
-export const Container = styled.div`
-    width: 100%;
-    min-height: 100vh;
-    height: auto;
-    padding: 0 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-`;
+import { showIn } from '../../../styles/global';
 
 export const SignUpContainer = styled.div`
+    animation: ${showIn} 0.3s ease-in;
     max-width: 600px;
     width: 100%;
     padding: 5px 50px 50px 50px;
