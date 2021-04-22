@@ -6,6 +6,7 @@ export default createGlobalStyle`
         --color-red: #FF6161;
         --color-yellow: #E4C949;
         --color-dark-yellow: #FBCF02;
+        --color-light-blue: #4254f5;
         --color-blue: #5E7B9E;
         --color-dark-blue: #5b718b;
         --color-green: #00F453;
@@ -32,8 +33,14 @@ export default createGlobalStyle`
         background-color: var(--color-darker-white);
         font-size: 16px;
     }
+    h1, h2, h3, h4, h5, h6 {
+        display: block;
+        font-family: var(--font-primary);
+    }
     button {
         cursor: pointer;
+        font-family: var(--font-primary);
+        border: none;
     }
     table {
         border: none;

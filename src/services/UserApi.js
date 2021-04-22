@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-export const BASE_URL = 'https://seteapi.umarleyricardo.eti.br/';
+export const BASE_URL = 'https://seteapi.umarleyricardo.eti.br';
+//export const BASE_URL = 'http://sete.api';
 
 export const api = axios.create({
     baseURL: BASE_URL,
@@ -59,5 +60,15 @@ export const USERS_LIST = (token, params = {}) => {
         },
         url: '/users/api',
         params: params,
+    };
+};
+
+export const USERS_SETE_LIST = (token, municipio_id) => {
+    return {
+        method: 'get',
+        url: `/users/sete/${municipio_id}`,
+        headers: {
+            Authorization: token,
+        },
     };
 };

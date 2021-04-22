@@ -1,119 +1,150 @@
 import React from 'react';
-import { LeafletContainer } from './styles';
-import ModalComponent from './ModalComponent';
+import {
+    Container,
+    LeafletContainer,
+    AditionalInfo,
+    LoadingScreen,
+} from './styles';
+import { Collapse } from 'react-collapse';
+import { ReactSVG } from 'react-svg';
 
 import { useAuth } from '../../../hooks/AuthContex';
 import { useAlertModal } from '../../../hooks/AlertModal';
 import { useErrorHandler } from '../../../hooks/Errors';
-import {
-    api,
-    MUNICIPIOS_GET_ALL,
-    MUNICIPIOS_GET_BY_ID,
-} from '../../../services/SeteApi';
+import { api, MUNICIPIOS_GET_ALL } from '../../../services/SeteApi';
 
-import Leaflet from 'leaflet';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import Spinner from '../../../assets/svg/spinner.svg';
+import { AiOutlineCluster } from 'react-icons/ai';
+import { BsFillInfoCircleFill } from 'react-icons/bs';
+import FilterComponent from './FilterComponent';
+import ModalComponent from './ModalComponent';
+import MarkerComponent from './MarkerComponent';
+
+import { regionDivider } from '../../../helpers/regionHelpers';
+import { MapContainer, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import PinIcon from '../../../assets/svg/pin.svg';
-const mapPinIcon = Leaflet.icon({
-    iconUrl: PinIcon,
-    iconSize: [28, 38],
-    iconAnchor: [14, 15],
-    popupAnchor: [0, 0],
-});
+import 'leaflet.markercluster/dist/MarkerCluster.css';
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
+import 'leaflet.markercluster.freezable';
 
 function LeafletComponent() {
-    const [position, setPosition] = React.useState([-15.75, -47.95]);
-    const [mapZoom, setMapZoom] = React.useState(4);
-    const [markers, setMarkers] = React.useState([]);
-    const [modalIsOpened, setModalIsOpened] = React.useState(false);
-    const [modalObj, setModalObj] = React.useState({});
     const { signOut } = useAuth();
     const { createModal, clearModal } = useAlertModal();
     const { errorHandler } = useErrorHandler();
 
+    const clusterMarkersRef = React.useRef([]);
+    const [position, setPosition] = React.useState([-15.75, -47.95]);
+    const [mapZoom, setMapZoom] = React.useState(4);
+    const [markerFilter, setMarkerFilter] = React.useState('totalUsers');
+    const [markers, setMarkers] = React.useState(null);
+
+    const [modalIsOpened, setModalIsOpened] = React.useState(false);
+    const [modalObj, setModalObj] = React.useState({});
+
+    const [generalInfoIsOpened, setGeneralInfoIsOpened] = React.useState(false);
+    const [loading, setLoading] = React.useState(false);
+
     React.useEffect(() => {
         async function getAllCities() {
             try {
+                setLoading(true);
                 const token = window.localStorage.getItem('@seteweb:token');
                 const response = await api(MUNICIPIOS_GET_ALL(token));
                 const data = await response.data;
                 if (!data.result) {
                     throw { response };
                 }
-                setMarkers(data.data);
+                const treatedData = regionDivider(data.data);
+                setMarkers(treatedData);
             } catch (err) {
                 errorHandler(err, { title: 'Erro ao carregar o mapa' });
+            } finally {
+                setLoading(false);
             }
         }
         getAllCities();
     }, [signOut]);
 
-    const handleMarkerClick = React.useCallback(
-        async (event, item) => {
-            try {
-                document.querySelector('html').style.cursor = 'progress';
-                const token = window.localStorage.getItem('@seteweb:token');
-                const response = await api(
-                    MUNICIPIOS_GET_BY_ID(item.codigo_municipio, token),
-                );
-                const data = await response.data;
-                setModalObj(data);
-                setModalIsOpened(true);
-            } catch (err) {
-                errorHandler(err, {
-                    title: 'Erro ao Buscar dados do município',
-                });
-            } finally {
-                document.querySelector('html').style.cursor = 'default';
-            }
-        },
-        [setModalIsOpened],
-    );
+    const handleReClusterClick = React.useCallback(() => {
+        clusterMarkersRef.current.forEach((item) => {
+            item.enableClustering();
+        });
+    }, [clusterMarkersRef]);
+
+    const handleGeneralInfoClick = React.useCallback(() => {
+        setGeneralInfoIsOpened((prev) => !prev);
+    }, [setGeneralInfoIsOpened]);
 
     return (
-        <LeafletContainer modalIsOpened={modalIsOpened}>
-            <MapContainer
-                className="mapview"
-                center={position}
-                zoom={mapZoom}
-                scrollWhellZoom={false}
-            >
-                <TileLayer
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
+        <Container>
+            {markers !== null && (
+                <Collapse isOpened={generalInfoIsOpened}>
+                    <FilterComponent
+                        markers={markers}
+                        markerFilter={markerFilter}
+                        setMarkerFilter={setMarkerFilter}
+                    />
+                </Collapse>
+            )}
+            <LeafletContainer modalIsOpened={modalIsOpened}>
+                <MapContainer
+                    className="mapview"
+                    center={position}
+                    zoom={mapZoom}
+                    scrollWhellZoom={false}
+                    minZoom={4}
+                >
+                    <TileLayer
+                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    />
+                    {markers !== null && (
+                        <MarkerComponent
+                            markers={markers[markerFilter]}
+                            setModalObj={setModalObj}
+                            setModalIsOpened={setModalIsOpened}
+                            clusterMarkersRef={clusterMarkersRef}
+                        />
+                    )}
+                </MapContainer>
+                <AditionalInfo modalIsOpened={modalIsOpened}>
+                    <div className="aditional-button-container">
+                        <button
+                            onClick={handleReClusterClick}
+                            className="button-recluster"
+                            disabled={modalIsOpened}
+                        >
+                            <AiOutlineCluster
+                                size={20}
+                                color="var(--color-white)"
+                            />
+                        </button>
+                        <button
+                            onClick={handleGeneralInfoClick}
+                            className="button-general-info"
+                            disabled={modalIsOpened}
+                        >
+                            <BsFillInfoCircleFill
+                                size={16}
+                                color="var(--color-white)"
+                            />
+                        </button>
+                    </div>
+                </AditionalInfo>
+                {loading && (
+                    <LoadingScreen>
+                        <ReactSVG src={Spinner} />
+                    </LoadingScreen>
+                )}
 
-                {markers.length > 0
-                    ? markers.map((item, index) => {
-                          return (
-                              <Marker
-                                  position={[
-                                      Number(item.latitude),
-                                      Number(item.longitude),
-                                  ]}
-                                  icon={mapPinIcon}
-                                  key={index}
-                                  eventHandlers={{
-                                      click: (event) =>
-                                          handleMarkerClick(event, item),
-                                  }}
-                              >
-                                  <Popup onClick={handleMarkerClick}>
-                                      {item.nome_cidade}-{item.uf}
-                                  </Popup>
-                              </Marker>
-                          );
-                      })
-                    : null}
-            </MapContainer>
-            <ModalComponent
-                modalIsOpened={modalIsOpened}
-                setModalIsOpened={setModalIsOpened}
-                modalObj={modalObj}
-                setModalObj={setModalObj}
-            />
-        </LeafletContainer>
+                <ModalComponent
+                    modalIsOpened={modalIsOpened}
+                    setModalIsOpened={setModalIsOpened}
+                    modalObj={modalObj}
+                    setModalObj={setModalObj}
+                />
+            </LeafletContainer>
+        </Container>
     );
 }
 

@@ -5,40 +5,25 @@ import {
     PaginationContainer,
     SearchContainer,
 } from './styles';
-import { useTable, useSortBy, usePagination } from 'react-table';
+import {
+    useTable,
+    useSortBy,
+    usePagination,
+    useGlobalFilter,
+} from 'react-table';
 import { ReactSVG } from 'react-svg';
 import { MdSkipNext, MdSkipPrevious } from 'react-icons/md';
+import { BsArrowLeft } from 'react-icons/bs';
 import {
     IoIosArrowDropupCircle,
     IoIosArrowDropdownCircle,
     IoMdArrowDropright,
     IoMdArrowDropleft,
 } from 'react-icons/io';
-import debounce from 'lodash.debounce';
 
-import Spinner from '../../../../assets/svg/spinner.svg';
 import TableSearchInput from '../../../../components/Inputs/TableSearchInput';
 
-import { api, USERS_SETE_LIST } from '../../../../services/UserApi';
-import { useErrorHandler } from '../../../../hooks/Errors';
-import { useAlertModal } from '../../../../hooks/AlertModal';
-
-function TableComponent({
-    columns,
-    data,
-    loading,
-    fetchData,
-    pageCount: controlledPageCount,
-    setLoading,
-    setTableModalData,
-    setTableModalIsOpened,
-}) {
-    const { errorHandler } = useErrorHandler();
-    const { clearModal, createModal, createModalAsync } = useAlertModal();
-    const [reqParams, setReqParams] = React.useState({
-        tipo: 'lista',
-        busca: '',
-    });
+function SeteTableComponent({ data, columns, setTableModalIsOpened }) {
     const {
         getTableProps,
         getTableBodyProps,
@@ -52,59 +37,37 @@ function TableComponent({
         gotoPage,
         nextPage,
         previousPage,
-        state: { pageIndex },
+        state: { pageIndex, globalFilter },
+        setGlobalFilter,
     } = useTable(
         {
-            columns: columns,
-            data: data,
-            initialState: { pageIndex: 0 },
-            manualPagination: true,
-            autoResetPage: false,
-            pageCount: controlledPageCount,
+            columns,
+            data,
+            initialState: { pageSize: 10 },
         },
+        useGlobalFilter,
         useSortBy,
         usePagination,
     );
 
-    const debouncedSave = React.useCallback(
-        debounce((debouncedValue) => {
-            gotoPage(0);
-            setReqParams((prev) => ({ ...prev, busca: debouncedValue }));
-        }, 300),
-        [setReqParams],
-    );
-
-    const handleInputChange = React.useCallback((event) => {
-        setLoading(true);
-        debouncedSave(event.target.value);
-    });
-
-    async function handleSeteUsersSearch(cityId) {
-        try {
-            createModal();
-            const token = localStorage.getItem('@seteweb:token');
-            const response = await api(USERS_SETE_LIST(token, cityId));
-            const data = await response.data;
-            setTableModalData(data.data);
-            setTableModalIsOpened(true);
-        } catch (err) {
-            errorHandler(err, { title: 'Erro ao buscar usuários do sete' });
-        } finally {
-            clearModal();
-        }
-    }
-
-    React.useEffect(() => {
-        fetchData(pageIndex, reqParams);
-    }, [fetchData, pageIndex, reqParams]);
+    const handleGoBackClick = React.useCallback(() => {
+        setTableModalIsOpened(false);
+    }, [setTableModalIsOpened]);
 
     return (
         <Container>
+            <div className="goback-button">
+                <div onClick={handleGoBackClick}>
+                    <BsArrowLeft size={40} color="var(--color-black)" />
+                    <h4>Voltar</h4>
+                </div>
+            </div>
             <SearchContainer>
                 <TableSearchInput
                     labelText="Buscar:"
                     name="table_search"
-                    onChange={handleInputChange}
+                    value={globalFilter}
+                    onChange={(event) => setGlobalFilter(event.target.value)}
                 />
             </SearchContainer>
             <TableContainer>
@@ -142,36 +105,26 @@ function TableComponent({
                         ))}
                     </thead>
                     <tbody {...getTableBodyProps()}>
-                        {!loading &&
-                            page.map((row, index) => {
-                                prepareRow(row);
-                                return (
-                                    <tr
-                                        {...row.getRowProps()}
-                                        key={index}
-                                        onClick={() =>
-                                            handleSeteUsersSearch(
-                                                row.original.codigo_municipio,
-                                            )
-                                        }
-                                    >
-                                        {row.cells.map((cell, index) => {
-                                            return (
-                                                <td
-                                                    {...cell.getCellProps()}
-                                                    key={index}
-                                                >
-                                                    {cell.render('Cell')}
-                                                </td>
-                                            );
-                                        })}
-                                    </tr>
-                                );
-                            })}
+                        {page.map((row, index) => {
+                            prepareRow(row);
+                            return (
+                                <tr {...row.getRowProps()} key={index}>
+                                    {row.cells.map((cell, index) => {
+                                        return (
+                                            <td
+                                                {...cell.getCellProps()}
+                                                key={index}
+                                            >
+                                                {cell.render('Cell')}
+                                            </td>
+                                        );
+                                    })}
+                                </tr>
+                            );
+                        })}
                     </tbody>
                 </table>
             </TableContainer>
-            {loading && <ReactSVG src={Spinner} />}
             <PaginationContainer>
                 <div className="pagination-back">
                     <button
@@ -215,4 +168,4 @@ function TableComponent({
     );
 }
 
-export default TableComponent;
+export default SeteTableComponent;
