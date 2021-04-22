@@ -6,7 +6,13 @@ export const regionTypes = {
     Sul: ['PR', 'SC', 'RS'],
 };
 
-const regionsArr = ['Norte', 'Nordeste', 'CentroOeste', 'Sudeste', 'Sul'];
+export const regionsArr = [
+    'Norte',
+    'Nordeste',
+    'CentroOeste',
+    'Sudeste',
+    'Sul',
+];
 
 export function regionTypesHandler(uf) {
     const arrLength = regionsArr.length;
@@ -20,16 +26,45 @@ export function regionTypesHandler(uf) {
 }
 
 export function regionDivider(data) {
-    let ufDividedData = {
+    let ufDividedTotalUsers = {
         Norte: [],
         Nordeste: [],
         CentroOeste: [],
         Sudeste: [],
         Sul: [],
+        count: 0,
+    };
+    let ufDividedActiveUsers = {
+        Norte: [],
+        Nordeste: [],
+        CentroOeste: [],
+        Sudeste: [],
+        Sul: [],
+        count: 0,
+    };
+    let ufDividedInactiveUsers = {
+        Norte: [],
+        Nordeste: [],
+        CentroOeste: [],
+        Sudeste: [],
+        Sul: [],
+        count: 0,
     };
     data.forEach((item) => {
         const regionName = regionTypesHandler(item.uf);
-        ufDividedData[regionName] = [...ufDividedData[regionName], item];
+        if (item.usa_sistema) {
+            ufDividedActiveUsers[regionName].push(item);
+            ufDividedActiveUsers.count++;
+        } else {
+            ufDividedInactiveUsers[regionName].push(item);
+            ufDividedInactiveUsers.count++;
+        }
+        ufDividedTotalUsers[regionName].push(item);
+        ufDividedTotalUsers.count++;
     });
-    return ufDividedData;
+    return {
+        totalUsers: ufDividedTotalUsers,
+        activeUsers: ufDividedActiveUsers,
+        inactiveUsers: ufDividedInactiveUsers,
+    };
 }

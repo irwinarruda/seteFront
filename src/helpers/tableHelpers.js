@@ -34,6 +34,7 @@ export const cityTableDataHandle = (arr) => {
         let itemData = item.data;
         itemData = {
             ...itemData,
+            codigo_municipio: item.codigo_municipio,
             nome_cidade: item.nome_cidade,
             uf: item.uf,
         };
@@ -88,6 +89,37 @@ export const userListTableDataHandle = (arr) => {
             nome: item.nome,
             email: item.email,
             is_ativo: item.is_ativo,
+        };
+        return itemData;
+    });
+};
+
+export const seteUsersListTableColumns = [
+    {
+        Header: 'Nome',
+        accessor: 'nome',
+    },
+    {
+        Header: 'E-mail',
+        accessor: 'email',
+    },
+    {
+        Header: 'Telefone',
+        accessor: 'telefone',
+    },
+    {
+        Header: 'CPF',
+        accessor: 'cpf',
+    },
+];
+
+export const seteUserListTableDataHandle = (arr) => {
+    return arr.map((item) => {
+        let itemData = {
+            nome: item.nome,
+            email: item.email,
+            telefone: item.telefone,
+            cpf: item.cpf,
         };
         return itemData;
     });

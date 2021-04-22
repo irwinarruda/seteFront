@@ -3,24 +3,71 @@ import React from 'react';
 import { useAlertModal } from '../../../../hooks/AlertModal';
 import { useErrorHandler } from '../../../../hooks/Errors';
 import { api, MUNICIPIOS_GET_BY_ID } from '../../../../services/SeteApi';
+import { regionsArr } from '../../../../helpers/regionHelpers';
 
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 import { Marker, Popup } from 'react-leaflet';
 import Leaflet from 'leaflet';
-import PinIcon from '../../../../assets/svg/pin.svg';
-const mapPinIcon = Leaflet.icon({
-    iconUrl: PinIcon,
+import GreenPinIcon from '../../../../assets/svg/leaflet/green-pin.svg';
+import RedPinIcon from '../../../../assets/svg/leaflet/red-pin.svg';
+import BluePinIcon from '../../../../assets/svg/leaflet/blue-pin.svg';
+import LightBluePinIcon from '../../../../assets/svg/leaflet/light-blue-pin.svg';
+const mapPinIconLightBlue = Leaflet.icon({
+    iconUrl: LightBluePinIcon,
+    iconSize: [28, 38],
+    iconAnchor: [14, 15],
+    popupAnchor: [0, 0],
+});
+const mapPinIconBlue = Leaflet.icon({
+    iconUrl: BluePinIcon,
+    iconSize: [28, 38],
+    iconAnchor: [14, 15],
+    popupAnchor: [0, 0],
+});
+const mapPinIconGreen = Leaflet.icon({
+    iconUrl: GreenPinIcon,
+    iconSize: [28, 38],
+    iconAnchor: [14, 15],
+    popupAnchor: [0, 0],
+});
+const mapPinIconRed = Leaflet.icon({
+    iconUrl: RedPinIcon,
     iconSize: [28, 38],
     iconAnchor: [14, 15],
     popupAnchor: [0, 0],
 });
 
-function MarkerComponent({ markers, setModalObj, setModalIsOpened }) {
+function MarkerComponent({
+    markers,
+    setModalObj,
+    setModalIsOpened,
+    clusterMarkersRef,
+}) {
+    const { createModal, clearModal } = useAlertModal();
     const { errorHandler } = useErrorHandler();
+
+    React.useEffect(() => {
+        if (clusterMarkersRef.current) {
+            clusterMarkersRef.current.forEach((item) => {
+                item.on('clusterclick', (a) => {
+                    item.disableClustering();
+                    console.log(
+                        'cluster ' + a.layer.getAllChildMarkers().length,
+                    );
+                });
+            });
+        }
+        return () => {
+            clusterMarkersRef?.current?.forEach((item) => {
+                item?.removeEventListener('clusterclick');
+            });
+        };
+    }, [markers]);
+
     const handleMarkerClick = React.useCallback(
         async (event, item) => {
             try {
-                document.querySelector('html').style.cursor = 'progress';
+                createModal();
                 const token = window.localStorage.getItem('@seteweb:token');
                 const response = await api(
                     MUNICIPIOS_GET_BY_ID(item.codigo_municipio, token),
@@ -33,148 +80,52 @@ function MarkerComponent({ markers, setModalObj, setModalIsOpened }) {
                     title: 'Erro ao Buscar dados do município',
                 });
             } finally {
-                document.querySelector('html').style.cursor = 'default';
+                clearModal();
             }
         },
         [setModalIsOpened, setModalObj],
     );
     return (
         <>
-            <MarkerClusterGroup
-                maxClusterRadius={300}
-                disableClusteringAtZoom={5}
-            >
-                {markers.Norte.length > 0
-                    ? markers.Norte.map((item, index) => {
-                          return (
-                              <Marker
-                                  position={[
-                                      Number(item.latitude),
-                                      Number(item.longitude),
-                                  ]}
-                                  key={index}
-                                  icon={mapPinIcon}
-                                  eventHandlers={{
-                                      click: (event) =>
-                                          handleMarkerClick(event, item),
-                                  }}
-                              >
-                                  <Popup onClick={handleMarkerClick}>
-                                      {item.nome_cidade}-{item.uf}
-                                  </Popup>
-                              </Marker>
-                          );
-                      })
-                    : null}
-            </MarkerClusterGroup>
-            <MarkerClusterGroup
-                maxClusterRadius={300}
-                disableClusteringAtZoom={5}
-            >
-                {markers.Nordeste.length > 0
-                    ? markers.Nordeste.map((item, index) => {
-                          return (
-                              <Marker
-                                  position={[
-                                      Number(item.latitude),
-                                      Number(item.longitude),
-                                  ]}
-                                  key={index}
-                                  icon={mapPinIcon}
-                                  eventHandlers={{
-                                      click: (event) =>
-                                          handleMarkerClick(event, item),
-                                  }}
-                              >
-                                  <Popup onClick={handleMarkerClick}>
-                                      {item.nome_cidade}-{item.uf}
-                                  </Popup>
-                              </Marker>
-                          );
-                      })
-                    : null}
-            </MarkerClusterGroup>
-            <MarkerClusterGroup
-                maxClusterRadius={300}
-                disableClusteringAtZoom={5}
-            >
-                {markers.CentroOeste.length > 0
-                    ? markers.CentroOeste.map((item, index) => {
-                          return (
-                              <Marker
-                                  position={[
-                                      Number(item.latitude),
-                                      Number(item.longitude),
-                                  ]}
-                                  key={index}
-                                  icon={mapPinIcon}
-                                  eventHandlers={{
-                                      click: (event) =>
-                                          handleMarkerClick(event, item),
-                                  }}
-                              >
-                                  <Popup onClick={handleMarkerClick}>
-                                      {item.nome_cidade}-{item.uf}
-                                  </Popup>
-                              </Marker>
-                          );
-                      })
-                    : null}
-            </MarkerClusterGroup>
-            <MarkerClusterGroup
-                maxClusterRadius={300}
-                disableClusteringAtZoom={5}
-            >
-                {markers.Sudeste.length > 0
-                    ? markers.Sudeste.map((item, index) => {
-                          return (
-                              <Marker
-                                  position={[
-                                      Number(item.latitude),
-                                      Number(item.longitude),
-                                  ]}
-                                  key={index}
-                                  icon={mapPinIcon}
-                                  eventHandlers={{
-                                      click: (event) =>
-                                          handleMarkerClick(event, item),
-                                  }}
-                              >
-                                  <Popup onClick={handleMarkerClick}>
-                                      {item.nome_cidade}-{item.uf}
-                                  </Popup>
-                              </Marker>
-                          );
-                      })
-                    : null}
-            </MarkerClusterGroup>
-            <MarkerClusterGroup
-                maxClusterRadius={300}
-                disableClusteringAtZoom={5}
-            >
-                {markers.Sul.length > 0
-                    ? markers.Sul.map((item, index) => {
-                          return (
-                              <Marker
-                                  position={[
-                                      Number(item.latitude),
-                                      Number(item.longitude),
-                                  ]}
-                                  key={index}
-                                  icon={mapPinIcon}
-                                  eventHandlers={{
-                                      click: (event) =>
-                                          handleMarkerClick(event, item),
-                                  }}
-                              >
-                                  <Popup onClick={handleMarkerClick}>
-                                      {item.nome_cidade}-{item.uf}
-                                  </Popup>
-                              </Marker>
-                          );
-                      })
-                    : null}
-            </MarkerClusterGroup>
+            {regionsArr.map((region, regionIndex) => {
+                return (
+                    <MarkerClusterGroup
+                        key={regionIndex}
+                        showCoverageOnHover={false}
+                        maxClusterRadius={5000}
+                        zoomToBoundsOnClick={false}
+                        ref={(ref) => {
+                            clusterMarkersRef.current[regionIndex] = ref;
+                        }}
+                    >
+                        {markers[region]?.length > 0
+                            ? markers[region]?.map((item, index) => {
+                                  return (
+                                      <Marker
+                                          position={[
+                                              Number(item.latitude),
+                                              Number(item.longitude),
+                                          ]}
+                                          key={index}
+                                          icon={
+                                              item.usa_sistema
+                                                  ? mapPinIconLightBlue
+                                                  : mapPinIconRed
+                                          }
+                                          eventHandlers={{
+                                              click: (event) =>
+                                                  handleMarkerClick(
+                                                      event,
+                                                      item,
+                                                  ),
+                                          }}
+                                      />
+                                  );
+                              })
+                            : null}
+                    </MarkerClusterGroup>
+                );
+            })}
         </>
     );
 }

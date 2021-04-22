@@ -44,7 +44,6 @@ export const TableContainer = styled.div`
 
     tbody {
         tr {
-            cursor: pointer;
             transition: all 0.05s linear;
             & + tr {
                 border-top: 1px solid #e6e6e6;
@@ -70,7 +69,7 @@ export const TableContainer = styled.div`
 export const SearchContainer = styled.div`
     max-width: 330px;
     width: 100%;
-    margin: 0px auto 10px 0px;
+    margin: 30px auto 10px 0px;
     & > div {
         label {
             font-size: 18px;
@@ -148,4 +147,22 @@ export const PaginationContainer = styled.div`
 
 export const Container = styled.div`
     width: 100%;
+    .goback-button {
+        max-width: 100px;
+        width: 100%;
+        margin-top: 0px;
+        & > div {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            h4 {
+                margin-left: 5px;
+
+                font-family: var(--font-primary);
+                font-weight: 500;
+                color: var(--color-black);
+                user-select: none;
+            }
+        }
+    }
 `;
