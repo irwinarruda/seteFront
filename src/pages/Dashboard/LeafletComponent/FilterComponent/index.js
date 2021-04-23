@@ -9,7 +9,7 @@ function FilterComponent({ markers, markerFilter, setMarkerFilter }) {
     return (
         <Container>
             <div className="general-title">
-                <h2>Filtro de Instalações do SETE</h2>
+                <h2>Painel de Instalações do SETE</h2>
             </div>
             <div className="general-info-container">
                 <div className="general-info">
@@ -51,7 +51,7 @@ function FilterComponent({ markers, markerFilter, setMarkerFilter }) {
                     >
                         <div className="item-icon">
                             <ReactSVG src={UsersIconInactive} />
-                            <h4>instalações sem Uso</h4>
+                            <h4>Instalações sem Uso</h4>
                         </div>
                         <div className="item-status">
                             <h3>{markers.inactiveUsers.count}</h3>

@@ -20,6 +20,11 @@ import Spinner from '../../../../assets/svg/spinner.svg';
 import TableSearchInput from '../../../../components/Inputs/TableSearchInput';
 
 import { api, USERS_SETE_LIST } from '../../../../services/UserApi';
+import {
+    api as seteApi,
+    BASE_URL as SETE_BASE_URL,
+    MUNICIPIOS_GET_ALL,
+} from '../../../../services/SeteApi';
 import { useErrorHandler } from '../../../../hooks/Errors';
 import { useAlertModal } from '../../../../hooks/AlertModal';
 
@@ -32,6 +37,7 @@ function TableComponent({
     setLoading,
     setTableModalData,
     setTableModalIsOpened,
+    setDownloadLink,
 }) {
     const { errorHandler } = useErrorHandler();
     const { clearModal, createModal, createModalAsync } = useAlertModal();
@@ -94,6 +100,29 @@ function TableComponent({
         }
     }
 
+    async function handleGenerateTableClick() {
+        try {
+            createModal('loading', {
+                title: 'Gerando Tabela',
+                text: 'Este procedimento pode ser demorado!',
+            });
+            const token = localStorage.getItem('@seteweb:token');
+            const response = await seteApi(
+                MUNICIPIOS_GET_ALL(token, { tipo: 'excel' }),
+            );
+            const data = await response.data;
+            setDownloadLink(`${SETE_BASE_URL}/${data.file}`);
+            await createModalAsync('success', {
+                title: 'Tabela gerada com sucesso!',
+            });
+            window.open(`${SETE_BASE_URL}/${data.file}`, '_blanc');
+        } catch (err) {
+            errorHandler(err, { title: 'Erro ao gerar Tabela!' });
+        } finally {
+            clearModal();
+        }
+    }
+
     React.useEffect(() => {
         fetchData(pageIndex, reqParams);
     }, [fetchData, pageIndex, reqParams]);
@@ -106,6 +135,11 @@ function TableComponent({
                     name="table_search"
                     onChange={handleInputChange}
                 />
+                <div className="download-button-container">
+                    <button onClick={handleGenerateTableClick}>
+                        Exportar Dados
+                    </button>
+                </div>
             </SearchContainer>
             <TableContainer>
                 <table {...getTableProps()}>
