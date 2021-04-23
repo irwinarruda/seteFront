@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, DownloadContainer } from './styles';
+import { Container } from './styles';
 import TableComponent from './TableComponent';
 import SeteTableComponent from './SeteTableComponent';
 import { useSeteTables } from '../../../hooks/SeteTables';
@@ -63,25 +63,8 @@ function CityTableComponent() {
                         setLoading={setLoading}
                         setTableModalData={setTableModalData}
                         setTableModalIsOpened={setTableModalIsOpened}
+                        setDownloadLink={setDownloadLink}
                     />
-                    <DownloadContainer>
-                        <div className="download-button-container">
-                            <button onClick={handleGenerateTableClick}>
-                                Gerar Tabela
-                            </button>
-                        </div>
-                        {downloadLink.length > 0 && (
-                            <>
-                                <h3>
-                                    Seu download está pronto{' '}
-                                    <a href={downloadLink} target="_blanc">
-                                        clique aqui
-                                    </a>{' '}
-                                    para acessa-lo
-                                </h3>
-                            </>
-                        )}
-                    </DownloadContainer>
                 </>
             ) : (
                 <SeteTableComponent

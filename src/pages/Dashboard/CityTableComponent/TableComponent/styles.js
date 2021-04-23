@@ -68,13 +68,34 @@ export const TableContainer = styled.div`
 `;
 
 export const SearchContainer = styled.div`
-    max-width: 330px;
     width: 100%;
-    margin: 0px auto 10px 0px;
+    margin: 0px 0px 10px 0px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     & > div {
+        max-width: 330px;
         label {
             font-size: 18px;
             margin-right: 20px;
+        }
+    }
+
+    .download-button-container {
+        display: block;
+        text-align: center;
+        button {
+            color: var(--color-white);
+            font-size: 16px;
+            padding: 6px 30px;
+
+            border-radius: 3px;
+            background-color: #43aa8b;
+            transition: all 0.1s linear;
+            &:hover {
+                background-color: #457b6b;
+            }
         }
     }
 `;
