@@ -141,7 +141,7 @@ function SeteTableComponent({
                             size={75}
                             color="var(--color-orange)"
                         />
-                        <h4>Nenhum usuário cadastrado no SETE desktop</h4>
+                        <h4>Nenhum usuário liberado para este município</h4>
                     </div>
                 )}
             </TableContainer>
