@@ -8,10 +8,6 @@ import {
     seteUserListTableDataHandle,
 } from '../../../helpers/tableHelpers';
 
-import { api, BASE_URL, MUNICIPIOS_GET_ALL } from '../../../services/SeteApi';
-import { useErrorHandler } from '../../../hooks/Errors';
-import { useAlertModal } from '../../../hooks/AlertModal';
-
 function CityTableComponent() {
     const {
         columns,
@@ -21,34 +17,9 @@ function CityTableComponent() {
         setLoading,
         fetchData,
     } = useSeteTables('city');
-    const { errorHandler } = useErrorHandler();
-    const { createModal, clearModal, createModalAsync } = useAlertModal();
-    const [downloadLink, setDownloadLink] = React.useState('');
+    const [cityInfo, setCityInfo] = React.useState({});
     const [tableModalIsOpened, setTableModalIsOpened] = React.useState(false);
     const [tableModalData, setTableModalData] = React.useState(null);
-
-    async function handleGenerateTableClick() {
-        try {
-            createModal('loading', {
-                title: 'Gerando Tabela',
-                text: 'Este procedimento pode ser demorado!',
-            });
-            const token = localStorage.getItem('@seteweb:token');
-            const response = await api(
-                MUNICIPIOS_GET_ALL(token, { tipo: 'excel' }),
-            );
-            const data = await response.data;
-            setDownloadLink(`${BASE_URL}/${data.file}`);
-            await createModalAsync('success', {
-                title: 'Tabela gerada com sucesso!',
-            });
-            window.open(`${BASE_URL}/${data.file}`, '_blanc');
-        } catch (err) {
-            errorHandler(err, { title: 'Erro ao gerar Tabela!' });
-        } finally {
-            clearModal();
-        }
-    }
 
     return (
         <Container>
@@ -63,7 +34,8 @@ function CityTableComponent() {
                         setLoading={setLoading}
                         setTableModalData={setTableModalData}
                         setTableModalIsOpened={setTableModalIsOpened}
-                        setDownloadLink={setDownloadLink}
+                        cityInfo={cityInfo}
+                        setCityInfo={setCityInfo}
                     />
                 </>
             ) : (
@@ -71,6 +43,8 @@ function CityTableComponent() {
                     columns={seteUsersListTableColumns}
                     data={seteUserListTableDataHandle(tableModalData)}
                     setTableModalIsOpened={setTableModalIsOpened}
+                    cityInfo={cityInfo}
+                    setCityInfo={setCityInfo}
                 />
             )}
         </Container>

@@ -64,6 +64,21 @@ export const TableContainer = styled.div`
             justify-content: center;
         }
     }
+    .no-data-info {
+        width: 100%;
+        margin: 40px auto 30px auto;
+        svg {
+            display: block;
+            margin: 0 auto;
+        }
+        h4 {
+            display: block;
+            text-align: center;
+            font-weight: 500;
+            font-size: 19px;
+            color: var(--color-orange);
+        }
+    }
 `;
 
 export const SearchContainer = styled.div`

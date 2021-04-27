@@ -4,6 +4,8 @@ export default createGlobalStyle`
     :root {
         --font-primary: 'Roboto', sans-serif;
         --color-red: #FF6161;
+        --color-orange: #FCC95F;
+        --color-dark-orange: #F8B01D;
         --color-yellow: #E4C949;
         --color-dark-yellow: #FBCF02;
         --color-light-blue: #4254f5;
@@ -35,6 +37,7 @@ export default createGlobalStyle`
     }
     h1, h2, h3, h4, h5, h6 {
         display: block;
+        color: var(--color-black);
         font-family: var(--font-primary);
     }
     button {

@@ -8,6 +8,7 @@ import {
 import { useTable, useSortBy, usePagination } from 'react-table';
 import { ReactSVG } from 'react-svg';
 import { MdSkipNext, MdSkipPrevious } from 'react-icons/md';
+import { AiOutlineInfoCircle } from 'react-icons/ai';
 import {
     IoIosArrowDropupCircle,
     IoIosArrowDropdownCircle,
@@ -169,8 +170,20 @@ function Datatable({
                             })}
                     </tbody>
                 </table>
+                {loading ? (
+                    <ReactSVG src={Spinner} />
+                ) : (
+                    data.length === 0 && (
+                        <div className="no-data-info">
+                            <AiOutlineInfoCircle
+                                size={75}
+                                color="var(--color-orange)"
+                            />
+                            <h4>Nenhum usuário a liberar</h4>
+                        </div>
+                    )
+                )}
             </TableContainer>
-            {loading && <ReactSVG src={Spinner} />}
             <PaginationContainer>
                 <div className="pagination-back">
                     <button

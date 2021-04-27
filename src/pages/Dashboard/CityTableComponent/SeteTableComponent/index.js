@@ -11,8 +11,8 @@ import {
     usePagination,
     useGlobalFilter,
 } from 'react-table';
-import { ReactSVG } from 'react-svg';
 import { MdSkipNext, MdSkipPrevious } from 'react-icons/md';
+import { AiOutlineInfoCircle } from 'react-icons/ai';
 import { BsArrowLeft } from 'react-icons/bs';
 import {
     IoIosArrowDropupCircle,
@@ -23,7 +23,13 @@ import {
 
 import TableSearchInput from '../../../../components/Inputs/TableSearchInput';
 
-function SeteTableComponent({ data, columns, setTableModalIsOpened }) {
+function SeteTableComponent({
+    data,
+    columns,
+    setTableModalIsOpened,
+    cityInfo,
+    setCityInfo,
+}) {
     const {
         getTableProps,
         getTableBodyProps,
@@ -61,6 +67,11 @@ function SeteTableComponent({ data, columns, setTableModalIsOpened }) {
                     <BsArrowLeft size={40} color="var(--color-black)" />
                     <h4>Voltar</h4>
                 </div>
+            </div>
+            <div className="city-title">
+                <h3>
+                    {cityInfo?.nome_cidade} - {cityInfo?.uf}
+                </h3>
             </div>
             <SearchContainer>
                 <TableSearchInput
@@ -124,6 +135,15 @@ function SeteTableComponent({ data, columns, setTableModalIsOpened }) {
                         })}
                     </tbody>
                 </table>
+                {data.length === 0 && (
+                    <div className="no-data-info">
+                        <AiOutlineInfoCircle
+                            size={75}
+                            color="var(--color-orange)"
+                        />
+                        <h4>Nenhum usuário cadastrado no SETE desktop</h4>
+                    </div>
+                )}
             </TableContainer>
             <PaginationContainer>
                 <div className="pagination-back">
