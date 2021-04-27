@@ -8,6 +8,7 @@ import {
 import { useTable, useSortBy, usePagination } from 'react-table';
 import { ReactSVG } from 'react-svg';
 import { MdSkipNext, MdSkipPrevious } from 'react-icons/md';
+import { AiOutlineInfoCircle } from 'react-icons/ai';
 import {
     IoIosArrowDropupCircle,
     IoIosArrowDropdownCircle,
@@ -37,7 +38,7 @@ function TableComponent({
     setLoading,
     setTableModalData,
     setTableModalIsOpened,
-    setDownloadLink,
+    setCityInfo,
 }) {
     const { errorHandler } = useErrorHandler();
     const { clearModal, createModal, createModalAsync } = useAlertModal();
@@ -85,12 +86,15 @@ function TableComponent({
         debouncedSave(event.target.value);
     });
 
-    async function handleSeteUsersSearch(cityId) {
+    async function handleSeteUsersSearch(cityInfo) {
         try {
             createModal();
             const token = localStorage.getItem('@seteweb:token');
-            const response = await api(USERS_SETE_LIST(token, cityId));
+            const response = await api(
+                USERS_SETE_LIST(token, cityInfo.codigo_municipio),
+            );
             const data = await response.data;
+            setCityInfo(cityInfo);
             setTableModalData(data.data);
             setTableModalIsOpened(true);
         } catch (err) {
@@ -111,7 +115,6 @@ function TableComponent({
                 MUNICIPIOS_GET_ALL(token, { tipo: 'excel' }),
             );
             const data = await response.data;
-            setDownloadLink(`${SETE_BASE_URL}/${data.file}`);
             await createModalAsync('success', {
                 title: 'Tabela gerada com sucesso!',
             });
@@ -184,9 +187,7 @@ function TableComponent({
                                         {...row.getRowProps()}
                                         key={index}
                                         onClick={() =>
-                                            handleSeteUsersSearch(
-                                                row.original.codigo_municipio,
-                                            )
+                                            handleSeteUsersSearch(row.original)
                                         }
                                     >
                                         {row.cells.map((cell, index) => {
@@ -204,8 +205,20 @@ function TableComponent({
                             })}
                     </tbody>
                 </table>
+                {loading ? (
+                    <ReactSVG src={Spinner} />
+                ) : (
+                    data.length === 0 && (
+                        <div className="no-data-info">
+                            <AiOutlineInfoCircle
+                                size={75}
+                                color="var(--color-orange)"
+                            />
+                            <h4>Nenhuma cidade cadastrada</h4>
+                        </div>
+                    )
+                )}
             </TableContainer>
-            {loading && <ReactSVG src={Spinner} />}
             <PaginationContainer>
                 <div className="pagination-back">
                     <button
