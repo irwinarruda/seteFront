@@ -78,6 +78,12 @@ export const AditionalInfo = styled.div`
                     background-color: var(--color-dark-blue);
                 }
             }
+            &.button-city-data {
+                background-color: var(--color-green);
+                &:hover {
+                    background-color: var(--color-dark-green);
+                }
+            }
             &:disabled {
                 cursor: default;
                 &.button-recluster {

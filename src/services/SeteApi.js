@@ -54,3 +54,13 @@ export const FREE_ACCESS_FIREBASE_LIST = (token, params = {}) => {
         params: params,
     };
 };
+
+export const FREE_ACCESS_FIREBASE_DELETE = (token, user_id) => {
+    return {
+        method: 'delete',
+        headers: {
+            Authorization: token,
+        },
+        url: `/permissao-firebase/${user_id}`,
+    };
+};

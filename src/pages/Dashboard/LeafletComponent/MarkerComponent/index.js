@@ -51,9 +51,6 @@ function MarkerComponent({
             clusterMarkersRef.current.forEach((item) => {
                 item.on('clusterclick', (a) => {
                     item.disableClustering();
-                    console.log(
-                        'cluster ' + a.layer.getAllChildMarkers().length,
-                    );
                 });
             });
         }
