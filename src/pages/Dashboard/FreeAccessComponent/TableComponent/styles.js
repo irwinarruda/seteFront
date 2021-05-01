@@ -18,7 +18,9 @@ export const TableContainer = styled.div`
     table th {
         font-size: 16px;
         text-align: center;
-        padding: 15px 10px;
+        padding: 15px 5px;
+        @media (max-width: 1100px) {
+        }
     }
 
     thead {
@@ -45,7 +47,7 @@ export const TableContainer = styled.div`
 
     tbody {
         tr {
-            cursor: pointer;
+            cursor: default;
             transition: all 0.05s linear;
             & + tr {
                 border-top: 1px solid #e6e6e6;
@@ -58,11 +60,20 @@ export const TableContainer = styled.div`
             }
             &:hover {
                 background-color: #e5e5e5;
-                td {
-                    &:nth-child(2) {
+            }
+            td {
+                &:nth-child(2) {
+                    &:hover {
+                        cursor: pointer;
                         background-color: #fbcf02;
                         color: var(--color-white);
-                        font-weight: 500;
+                        text-decoration: underline;
+                        font-weight: 400;
+                    }
+                }
+                &:nth-child(4) {
+                    &:hover {
+                        cursor: pointer;
                     }
                 }
             }

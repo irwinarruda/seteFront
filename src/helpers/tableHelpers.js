@@ -1,3 +1,6 @@
+import React from 'react';
+import { RiDeleteBack2Line } from 'react-icons/ri';
+
 export const cityTableColumns = [
     {
         Header: 'Cidade',
@@ -55,14 +58,26 @@ export const freeAccessTableColumns = [
         Header: 'Localidade',
         accessor: 'localidade',
     },
+    {
+        Header: 'Ações',
+        accessor: 'acoes',
+    },
 ];
 
 export const freeAccessTableDataHandle = (arr) => {
     return arr.map((item) => {
         let itemData = {
+            user_id: item.uid,
             nome: item.nome,
             email: item.email,
             localidade: item.localidade,
+            acoes: (
+                <RiDeleteBack2Line
+                    size={22}
+                    color="#FF6161"
+                    style={{ marginBottom: '-5px', cursor: 'pointer' }}
+                />
+            ),
         };
         return itemData;
     });

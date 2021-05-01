@@ -11,8 +11,8 @@ export default createGlobalStyle`
         --color-light-blue: #4254f5;
         --color-blue: #5E7B9E;
         --color-dark-blue: #5b718b;
-        --color-green: #00F453;
-        --color-dark-green: #04CA47;
+        --color-green: #07a43c;
+        --color-dark-green: #059B38;
         --color-darker-white: #F4F4F4;
         --color-bg-white: #FAFAFA;
         --color-white: #FFFFFF;

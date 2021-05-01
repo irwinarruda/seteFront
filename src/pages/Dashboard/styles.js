@@ -11,7 +11,7 @@ export const Container = styled.section`
 `;
 
 export const BoxContainer = styled.div`
-    max-width: 1070px;
+    max-width: 1100px;
     width: 100%;
     height: fit-content;
     margin: 42px auto 30px auto;

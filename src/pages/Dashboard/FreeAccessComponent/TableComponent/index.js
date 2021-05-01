@@ -17,11 +17,12 @@ import {
 } from 'react-icons/io';
 
 import { useFormikContext } from 'formik';
+import { useJsxTdHelpers } from '../../../../hooks/TableData';
 
 import debounce from 'lodash.debounce';
 
 import Spinner from '../../../../assets/svg/spinner.svg';
-import TableSearchInput from '../../../../components/Inputs/TableSearchInput';
+import ControlledTableSearchInput from '../../../../components/Inputs/ControlledTableSearchInput';
 import YellowButton from '../../../../components/Buttons/YellowButton';
 
 function Datatable({
@@ -34,6 +35,8 @@ function Datatable({
     pageCount: controlledPageCount,
     setLoading,
 }) {
+    const [inputValue, setInputValue] = React.useState();
+    const { removeFromList } = useJsxTdHelpers();
     const { setFieldValue } = useFormikContext();
 
     const handleRowClick = React.useCallback(
@@ -85,16 +88,24 @@ function Datatable({
             gotoPage(0);
             setReqParams({ busca: debouncedValue });
         }, 300),
-        [setReqParams],
+        [setReqParams, gotoPage],
     );
 
     const handleInputChange = React.useCallback(
         (event) => {
+            setInputValue(event.target.value);
             setLoading(true);
             debouncedSave(event.target.value);
         },
-        [setLoading],
+        [setLoading, setInputValue],
     );
+
+    const reRenderTable = React.useCallback(() => {
+        fetchData(0, { busca: '' });
+        setReqParams({ busca: '' });
+        gotoPage(0);
+        setInputValue('');
+    }, [fetchData, gotoPage, setReqParams, setInputValue]);
 
     React.useEffect(() => {
         fetchData(pageIndex, reqParams);
@@ -103,10 +114,11 @@ function Datatable({
     return (
         <Container>
             <SearchContainer>
-                <TableSearchInput
+                <ControlledTableSearchInput
                     labelText="Buscar:"
                     name="table_search"
                     onChange={handleInputChange}
+                    value={inputValue}
                 />
             </SearchContainer>
             <TableContainer>
@@ -148,17 +160,25 @@ function Datatable({
                             page.map((row, index) => {
                                 prepareRow(row);
                                 return (
-                                    <tr
-                                        {...row.getRowProps()}
-                                        key={index}
-                                        onClick={() =>
-                                            handleRowClick(row.cells[1].value)
-                                        }
-                                    >
+                                    <tr {...row.getRowProps()} key={index}>
                                         {row.cells.map((cell, index) => {
+                                            let clickEvent = null;
+                                            if (index === 1) {
+                                                clickEvent = () =>
+                                                    handleRowClick(cell.value);
+                                            }
+                                            if (index === 3) {
+                                                clickEvent = () =>
+                                                    removeFromList(
+                                                        row.original.user_id,
+                                                        row.original.nome,
+                                                        reRenderTable,
+                                                    );
+                                            }
                                             return (
                                                 <td
                                                     {...cell.getCellProps()}
+                                                    onClick={clickEvent}
                                                     key={index}
                                                 >
                                                     {cell.render('Cell')}
@@ -179,7 +199,7 @@ function Datatable({
                                 size={75}
                                 color="var(--color-orange)"
                             />
-                            <h4>Nenhum usuário a liberar</h4>
+                            <h4>Nenhum usuário a encontrado</h4>
                         </div>
                     )
                 )}
