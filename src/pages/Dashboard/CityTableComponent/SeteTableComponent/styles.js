@@ -188,6 +188,13 @@ export const Container = styled.div`
             font-size: 22px;
             font-weight: 400;
         }
+        h4 {
+            margin-top: 2px;
+            width: 100%;
+            text-align: center;
+            font-size: 19px;
+            font-weight: 400;
+        }
         @media (max-width: 550px) {
             margin-top: 20px;
         }

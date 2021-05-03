@@ -113,6 +113,13 @@ export const SearchContainer = styled.div`
             }
         }
     }
+    @media (max-width: 580px) {
+        flex-direction: column;
+        align-items: flex-start;
+        .download-button-container {
+            margin-top: 20px;
+        }
+    }
 `;
 
 export const PaginationContainer = styled.div`

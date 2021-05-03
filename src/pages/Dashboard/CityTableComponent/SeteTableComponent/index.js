@@ -72,6 +72,7 @@ function SeteTableComponent({
                 <h3>
                     {cityInfo?.nome_cidade} - {cityInfo?.uf}
                 </h3>
+                <h4>{cityInfo?.codigo_municipio}</h4>
             </div>
             <SearchContainer>
                 <TableSearchInput

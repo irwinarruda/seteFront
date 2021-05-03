@@ -3,6 +3,10 @@ import { RiDeleteBack2Line } from 'react-icons/ri';
 
 export const cityTableColumns = [
     {
+        Header: 'Código',
+        accessor: 'codigo_municipio',
+    },
+    {
         Header: 'Cidade',
         accessor: 'nome_cidade',
     },
