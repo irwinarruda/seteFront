@@ -29,7 +29,7 @@ function BoxNavMenu({ navActive, setNavActive }) {
                 onClick={() => setNavActive('section_info_table')}
             >
                 <ReactSVG src={InfoTableIcon} />
-                <h2>TABELA</h2>
+                <h2>TABELA GERAL</h2>
             </div>
             <div
                 className={`box-nav-button${
