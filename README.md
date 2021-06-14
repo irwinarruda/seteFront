@@ -18,7 +18,7 @@
 
 - https://formik.org/docs/overview
 
-# Yup 
+# Yup
 
 - https://github.com/jquense/yup
 
@@ -33,6 +33,8 @@
 # React-Table
 
 - https://react-table.tanstack.com/
+- https://stackoverflow.com/questions/64608974/react-table-pagination-properties-doesnt-exist-on-type-tableinstance
+- https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react-table
 
 # Input Debounce
 
