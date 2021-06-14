@@ -12,7 +12,7 @@ const menuNavItems = {
     section_user_list: List,
 };
 
-function SystemUser() {
+const SystemUser: React.FC = () => {
     const [navActive, setNavActive] = React.useState<menuNavTypes>(
         'section_user_register',
     );
@@ -27,6 +27,6 @@ function SystemUser() {
             </BoxContainer>
         </Container>
     );
-}
+};
 
 export default SystemUser;

@@ -14,7 +14,7 @@ const menuNavItems = {
     section_free_access: FreeAccessComponent,
 };
 
-function Dashboard() {
+const Dashboard: React.FC = () => {
     const [navActive, setNavActive] = React.useState<menuNavTypes>(
         'section_map_cities',
     );
@@ -29,6 +29,6 @@ function Dashboard() {
             </BoxContainer>
         </Container>
     );
-}
+};
 
 export default Dashboard;

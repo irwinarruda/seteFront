@@ -23,7 +23,7 @@ interface IFormikValues {
     password_confirm_field: string;
 }
 
-function SignUp() {
+const SignUp: React.FC = () => {
     const { signInAsync } = useAuth();
     const { clearModal, createModal } = useAlertModal();
     const { errorHandler } = useErrorHandler();
@@ -128,6 +128,6 @@ function SignUp() {
             </SignUpContainer>
         </Container>
     );
-}
+};
 
 export default SignUp;
