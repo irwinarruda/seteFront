@@ -25,28 +25,31 @@ const SignIn: React.FC = () => {
     const { clearModal, createModal } = useAlertModal();
     const { errorHandler } = useErrorHandler();
 
-    async function handleFormikSubmit(
-        values: IFormikValues,
-        { setSubmitting, resetForm }: FormikHelpers<IFormikValues>,
-    ): Promise<void> {
-        try {
-            setSubmitting(true);
-            createModal();
-            const body = {
-                usuario: values.email_field,
-                senha: md5(values.password_field),
-            };
-            await signInAsync(body);
-            setTimeout(() => {
-                clearModal();
-            }, 2000);
-        } catch (err) {
-            errorHandler(err, { title: 'Erro ao entrar no sistema' });
-        } finally {
-            setSubmitting(false);
-            resetForm();
-        }
-    }
+    const handleFormikSubmit = React.useCallback(
+        async (
+            values: IFormikValues,
+            { setSubmitting, resetForm }: FormikHelpers<IFormikValues>,
+        ): Promise<void> => {
+            try {
+                setSubmitting(true);
+                createModal();
+                const body = {
+                    usuario: values.email_field,
+                    senha: md5(values.password_field),
+                };
+                await signInAsync(body);
+                setTimeout(() => {
+                    clearModal();
+                }, 2000);
+            } catch (err) {
+                errorHandler(err, { title: 'Erro ao entrar no sistema' });
+            } finally {
+                setSubmitting(false);
+                resetForm();
+            }
+        },
+        [createModal, clearModal, errorHandler, signInAsync],
+    );
 
     return (
         <Container>

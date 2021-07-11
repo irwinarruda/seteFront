@@ -18,6 +18,7 @@
     "leaflet.markercluster.freezable": "^1.0.0",
     "lodash.debounce": "^4.0.8",
     "md5": "^2.3.0",
+    "query-string": "^7.0.1",
     "react": "^17.0.1",
     "react-collapse": "^5.1.0",
     "react-dom": "^17.0.1",

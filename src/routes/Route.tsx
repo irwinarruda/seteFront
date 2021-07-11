@@ -1,43 +1,55 @@
 import React from 'react';
-import {
-    Route,
-    Redirect,
-    RouteProps,
-    RouteComponentProps,
-} from 'react-router-dom';
-import { AuthContext } from '../hooks/AuthContex';
+import { Route, Redirect, RouteProps } from 'react-router-dom';
+import { Location, LocationDescriptorObject } from 'history';
+import { useAuth } from '../hooks/AuthContex';
 import Menu from '../pages/_layouts/menu';
 import Sign from '../pages/_layouts/sign';
+import queryString from 'query-string';
 
 interface Props extends RouteProps {
     isPrivate?: boolean;
-    component: React.ComponentType<RouteComponentProps>;
+    component: React.ComponentType<{ location: Location<unknown> }>;
 }
+
+const renderToProvider = (
+    isPrivate: boolean,
+    location: Location<unknown>,
+): LocationDescriptorObject => {
+    let toObject: LocationDescriptorObject = {};
+    const params = queryString.parse(location.search);
+    if (isPrivate) {
+        toObject.pathname = '/';
+        toObject.search = `?to=${location.pathname}`;
+    } else {
+        if (params.to) {
+            toObject.pathname = params.to as string;
+        } else {
+            toObject.pathname = '/dashboard';
+        }
+    }
+    toObject.state = { from: location };
+    return toObject;
+};
 
 const RouteWrapper: React.FC<Props> = ({
     component: Component,
     isPrivate = false,
     ...rest
 }) => {
-    const { logged } = React.useContext(AuthContext);
-
-    if (!logged && isPrivate) {
-        return <Redirect to="/" />;
-    }
-    if (logged && !isPrivate) {
-        return <Redirect to="/dashboard" />;
-    }
-
+    const { logged } = useAuth();
     const LayoutComponent = isPrivate ? Menu : Sign;
-
     return (
         <Route
             {...rest}
-            render={(props) => (
-                <LayoutComponent>
-                    <Component {...props} />
-                </LayoutComponent>
-            )}
+            render={({ location }) =>
+                isPrivate === logged ? (
+                    <LayoutComponent location={location}>
+                        <Component location={location} />
+                    </LayoutComponent>
+                ) : (
+                    <Redirect to={renderToProvider(isPrivate, location)} />
+                )
+            }
         />
     );
 };

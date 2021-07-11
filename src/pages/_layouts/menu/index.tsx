@@ -4,15 +4,19 @@ import {
     MainMenuHeaderContainer,
     MainMenuHeader,
 } from './styles';
-import { Link, NavLink } from 'react-router-dom';
+import { LocationDescriptorObject } from 'history';
+import { Link, NavLink, useHistory } from 'react-router-dom';
 import { useAuth } from '../../../hooks/AuthContex';
 import SeteLogoWhite from '../../../assets/svg/sete-logo-white.svg';
 
-const Menu: React.FC = ({ children }) => {
+const Menu: React.FC<{ location: LocationDescriptorObject }> = ({
+    children,
+}) => {
+    const history = useHistory();
     const { signOut } = useAuth();
-    function handleLogoutClick(): void {
+    const handleLogoutClick = React.useCallback((): void => {
         signOut();
-    }
+    }, [signOut, history]);
     return (
         <MainMenuContainer>
             <MainMenuHeaderContainer>
