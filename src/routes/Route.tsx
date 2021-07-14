@@ -11,7 +11,7 @@ interface Props extends RouteProps {
     component: React.ComponentType<{ location: Location<unknown> }>;
 }
 
-const renderToProvider = (
+const renderTo = (
     isPrivate: boolean,
     location: Location<unknown>,
 ): LocationDescriptorObject => {
@@ -47,11 +47,16 @@ const RouteWrapper: React.FC<Props> = ({
                         <Component location={location} />
                     </LayoutComponent>
                 ) : (
-                    <Redirect to={renderToProvider(isPrivate, location)} />
+                    <Redirect to={renderTo(isPrivate, location)} />
                 )
             }
         />
     );
 };
+// isPrivate === logged
+// true === true -> true
+// false === false -> true
+// true === false -> false
+// false === true -> false
 
 export default RouteWrapper;
