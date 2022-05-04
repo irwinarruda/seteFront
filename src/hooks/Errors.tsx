@@ -53,7 +53,7 @@ export const useErrorHandler = (): IErrorHandler => {
                       err.response.status + ': ' + err.response.statusText;
 
                 switch (err.response.status) {
-                    case 401:
+                    case 403:
                         signOut();
                         break;
                     default:
