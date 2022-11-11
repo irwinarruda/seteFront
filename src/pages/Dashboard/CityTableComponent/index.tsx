@@ -14,15 +14,15 @@ import {
 
 import { useErrorHandler } from '../../../hooks/Errors';
 import { useAlertModal } from '../../../hooks/AlertModal';
-import { api, FREE_ACCESS_FIREBASE } from '../../../services/SeteApi';
+import { api, CHANGE_PASSWORD_FIREBASE } from '../../../services/SeteApi';
 import {
     useResetPassword,
     ResetUserPasswordProvider,
 } from '../../../contexts/ResetUserPasswordContext';
 
 interface IFormikValues {
-    permission_email: string;
-    permission_checkbox: string;
+    password: string;
+    confirm_password: string;
 }
 
 export interface ICityInfo {
@@ -82,12 +82,12 @@ const CityTableComponent: React.FC = () => {
             setSubmitting(true);
             const token = window.localStorage.getItem('@seteweb:token');
             const body = {
-                email: values.permission_email,
-                tipo_permissao: values.permission_checkbox,
+                password: values.password,
+                confirm_password: values.confirm_password,
             };
             const modalCheck = await createModalAsync('warning', {
                 title: 'Deseja liberar acesso para:',
-                text: body.email,
+                text: body.password,
                 buttons: {
                     no: {
                         text: 'Não!',
@@ -101,7 +101,9 @@ const CityTableComponent: React.FC = () => {
                 className: 'swal-buttons',
             });
             if (modalCheck) {
-                const response = await api(FREE_ACCESS_FIREBASE(body, token));
+                const response = await api(
+                    CHANGE_PASSWORD_FIREBASE(body, token),
+                );
                 const data = await response.data;
                 warningHandler(data);
                 resetForm();
@@ -120,13 +122,14 @@ const CityTableComponent: React.FC = () => {
         <Container>
             <Formik
                 initialValues={{
-                    permission_email: '',
-                    permission_checkbox: 'reader',
+                    password: '',
+                    confirm_password: 'reader',
                 }}
                 validationSchema={Yup.object().shape({
-                    permission_email: Yup.string()
-                        .required('O Email deve ser preenchido')
-                        .email('O valor deve ser um email válido'),
+                    password: Yup.string().required('Escreva uma senha'),
+                    confirm_password: Yup.string().required(
+                        'Ase senhas devem ser iguais',
+                    ),
                 })}
                 onSubmit={handleFormikSubmit}
             >

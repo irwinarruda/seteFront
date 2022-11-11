@@ -2,7 +2,7 @@ import React from 'react';
 import { RiDeleteBack2Line } from 'react-icons/ri';
 import { ColumnWithLooseAccessor } from 'react-table';
 import { Link } from 'react-router-dom';
-import { Button, Tooltip, OverlayTrigger } from 'react-bootstrap';
+
 import { FaEdit, FaRegTimesCircle, FaSearch } from 'react-icons/fa';
 import {
     useResetPassword,
@@ -198,24 +198,23 @@ const AcoesComponent: React.FC = () => {
                 justifyContent: 'center',
             }}
         >
-            <OverlayTrigger
+            {/* <OverlayTrigger
                 key="bottom"
                 placement="bottom"
                 overlay={<Tooltip id="tooltip">Alterar Senha</Tooltip>}
+            > */}
+            <button
+                onClick={() => setResetPassord(true)}
+                style={{
+                    display: 'block',
+                    marginBottom: '-2px',
+                    border: 'none',
+                    backgroundColor: 'transparent',
+                    cursor: 'pointer',
+                }}
             >
-                <Button
-                    onClick={() => setResetPassord(true)}
-                    style={{
-                        display: 'block',
-                        marginBottom: '-2px',
-                        border: 'none',
-                        backgroundColor: 'transparent',
-                        cursor: 'pointer',
-                    }}
-                >
-                    <FaSearch size={'16px'} color={'gray'} />
-                </Button>
-            </OverlayTrigger>
+                <FaSearch size={'16px'} color={'gray'} />
+            </button>
         </div>
     );
 };
