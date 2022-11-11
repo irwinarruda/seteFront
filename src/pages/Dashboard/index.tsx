@@ -5,6 +5,7 @@ import BoxNavMenu from './BoxNavMenu';
 import LeafletComponent from './LeafletComponent';
 import FreeAccessComponent from './FreeAccessComponent';
 import CityTableComponent from './CityTableComponent';
+import { ResetUserPasswordProvider } from '../../contexts/ResetUserPasswordContext';
 
 type menuNavTypes = keyof typeof menuNavItems;
 
@@ -24,8 +25,13 @@ const Dashboard: React.FC = () => {
     return (
         <Container>
             <BoxContainer>
-                <BoxNavMenu navActive={navActive} setNavActive={setNavActive} />
-                <RenderLayout />
+                <ResetUserPasswordProvider>
+                    <BoxNavMenu
+                        navActive={navActive}
+                        setNavActive={setNavActive}
+                    />
+                    <RenderLayout />
+                </ResetUserPasswordProvider>
             </BoxContainer>
         </Container>
     );

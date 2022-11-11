@@ -1,6 +1,14 @@
 import React from 'react';
 import { RiDeleteBack2Line } from 'react-icons/ri';
 import { ColumnWithLooseAccessor } from 'react-table';
+import { Link } from 'react-router-dom';
+import { Button, Tooltip, OverlayTrigger } from 'react-bootstrap';
+import { FaEdit, FaRegTimesCircle, FaSearch } from 'react-icons/fa';
+import {
+    useResetPassword,
+    ResetUserPasswordProvider,
+} from '../contexts/ResetUserPasswordContext';
+import { ButtonContainer } from '../components/Buttons/YellowButton/styles';
 
 export const cityTableColumns: Array<ColumnWithLooseAccessor> = [
     {
@@ -166,6 +174,10 @@ export const seteUsersListTableColumns: Array<ColumnWithLooseAccessor> = [
         Header: 'CPF',
         accessor: 'cpf',
     },
+    {
+        Header: 'SENHA',
+        accessor: 'senha',
+    },
 ];
 
 export interface ISeteUserListData {
@@ -175,13 +187,48 @@ export interface ISeteUserListData {
     telefone: string;
     email: string;
 }
+
+const AcoesComponent: React.FC = () => {
+    const { resetPassord, setResetPassord } = useResetPassword();
+    return (
+        <div
+            style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+            }}
+        >
+            <OverlayTrigger
+                key="bottom"
+                placement="bottom"
+                overlay={<Tooltip id="tooltip">Alterar Senha</Tooltip>}
+            >
+                <Button
+                    onClick={() => setResetPassord(true)}
+                    style={{
+                        display: 'block',
+                        marginBottom: '-2px',
+                        border: 'none',
+                        backgroundColor: 'transparent',
+                        cursor: 'pointer',
+                    }}
+                >
+                    <FaSearch size={'16px'} color={'gray'} />
+                </Button>
+            </OverlayTrigger>
+        </div>
+    );
+};
+
 export const seteUserListTableDataHandle = (arr: Array<ISeteUserListData>) => {
     return arr.map((item) => {
+        console.log('item', item);
         let itemData = {
             nome: item.nome,
             email: item.email,
             telefone: item.telefone,
             cpf: item.cpf,
+            senha: <AcoesComponent />,
         };
         return itemData;
     });
