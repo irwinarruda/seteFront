@@ -9,33 +9,26 @@ import FormikInputRadio from '../../../../components/Inputs/FormikInputRadio';
 import FormikInputText from '../../../../components/Inputs/FormikInputText';
 import MainBlueButton from '../../../../components/Buttons/MainBlueButton';
 
-import {
-    useResetPassword,
-    ResetUserPasswordProvider,
-} from '../../../../contexts/ResetUserPasswordContext';
-
 interface IFreeAccessFormProps {
-    modalIsOpened: boolean;
-    setModalIsOpened: React.Dispatch<React.SetStateAction<boolean>>;
+    setResetPassord: React.Dispatch<React.SetStateAction<boolean>>;
     handleSubmit: (e?: React.FormEvent<HTMLFormElement> | undefined) => void;
     isSubmitting: boolean;
 }
 
 const ResetPasswordForm: React.FC<IFreeAccessFormProps> = ({
-    modalIsOpened,
-    setModalIsOpened,
+    setResetPassord,
     handleSubmit,
     isSubmitting,
 }) => {
     const formContainerRef = React.useRef<HTMLDivElement | null>(null);
-    const { setResetPassord } = useResetPassword();
+
     const handleGoBackClick = React.useCallback((): void => {
         setResetPassord(false);
-    }, [setModalIsOpened]);
+    }, [setResetPassord]);
 
     return (
-        <Container modalIsOpened={modalIsOpened}>
-            <FormContainer modalIsOpened={modalIsOpened} ref={formContainerRef}>
+        <Container>
+            <FormContainer ref={formContainerRef}>
                 <div className="goback-button">
                     <div onClick={handleGoBackClick}>
                         <BsArrowLeft size={40} color="var(--color-black)" />
@@ -48,17 +41,16 @@ const ResetPasswordForm: React.FC<IFreeAccessFormProps> = ({
                 </h3>
                 <Form onSubmit={handleSubmit}>
                     <FormikInputText
-                        type="text"
+                        type="password"
                         labelText="Digite a nova senha"
-                        name="new_password"
+                        name="password"
                     />
 
                     <FormikInputText
-                        type="text"
+                        type="password"
                         labelText="Confirme a nova senha"
-                        name="confirm_new_passoword"
+                        name="confirm_password"
                     />
-
                     <div className="free-access-button-container">
                         {isSubmitting ? (
                             <ImSpinner2
@@ -72,6 +64,18 @@ const ResetPasswordForm: React.FC<IFreeAccessFormProps> = ({
                             </MainBlueButton>
                         )}
                     </div>
+                    <FormikInputText type="hidden" labelText="" name="nome" />
+                    <FormikInputText type="hidden" labelText="" name="email" />
+                    <FormikInputText
+                        type="hidden"
+                        labelText=""
+                        name="telefone"
+                    />
+                    <FormikInputText
+                        type="hidden"
+                        labelText=""
+                        name="permissao"
+                    />
                 </Form>
             </FormContainer>
         </Container>

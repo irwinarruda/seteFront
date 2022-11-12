@@ -42,15 +42,6 @@ export interface IFREE_ACCESS_FIREBASE {
     tipo_permissao: string;
 }
 
-export interface ADMIN_CHANGE_USER_PASSWORD_FIREBASE {
-    nome: string;
-    cpf: string;
-    telefone: string;
-    email: string;
-    password: string;
-    nivel_permissao: string;
-}
-
 export const FREE_ACCESS_FIREBASE = (
     body: IFREE_ACCESS_FIREBASE,
     token: string | null,
@@ -94,21 +85,5 @@ export const FREE_ACCESS_FIREBASE_DELETE = (
             Authorization: token,
         },
         url: `/permissao-firebase/${user_id}`,
-    };
-};
-
-export const CHANGE_PASSWORD_FIREBASE = (
-    body: ADMIN_CHANGE_USER_PASSWORD_FIREBASE,
-    token: string | null,
-    codigo_cidade: number,
-): AxiosRequestConfig => {
-    return {
-        method: 'put',
-        headers: {
-            Authorization: token,
-            'Content-Type': 'application/json',
-        },
-        url: `/users/${codigo_cidade}/alterar-senha`,
-        data: body,
     };
 };

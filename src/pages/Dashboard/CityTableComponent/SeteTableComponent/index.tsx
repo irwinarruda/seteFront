@@ -23,14 +23,21 @@ import {
     IoMdArrowDropleft,
 } from 'react-icons/io';
 
+import { useFormikContext } from 'formik';
 import TableSearchInput from '../../../../components/Inputs/TableSearchInput';
 
 import { ICityInfo } from '../../CityTableComponent';
 import { ISeteUserListData } from '../../../../helpers/tableHelpers';
+
+type clickFunction =
+    | null
+    | ((event: React.MouseEvent<HTMLTableDataCellElement>) => void);
+
 interface ISeteTableComponentProps {
     columns: Array<ColumnWithLooseAccessor<{}>>;
     data: Array<Omit<ISeteUserListData, 'uid'>>;
     setTableModalIsOpened: React.Dispatch<React.SetStateAction<boolean>>;
+    setResetPassord: React.Dispatch<React.SetStateAction<boolean>>;
     cityInfo: ICityInfo | null;
     setCityInfo: React.Dispatch<React.SetStateAction<ICityInfo | null>>;
 }
@@ -39,9 +46,28 @@ const SeteTableComponent: React.FC<ISeteTableComponentProps> = ({
     columns,
     data,
     setTableModalIsOpened,
+    setResetPassord,
     cityInfo,
     setCityInfo,
 }) => {
+    const { setFieldValue } = useFormikContext();
+    const handleRowClick = React.useCallback(
+        (row) => {
+            setFieldValue('nome', row.nome);
+            setFieldValue('cpf', row.cpf.replace(/[-.]/g, ''));
+            setFieldValue('telefone', row.telefone);
+            setFieldValue('email', row.email);
+            setFieldValue('permissao', row.nivel_permissao);
+            setFieldValue('password', '');
+            setFieldValue('confirm_password', '');
+            setFieldValue('id_usuario', row.id_usuario);
+            setFieldValue('codigo_cidade', row.codigo_cidade);
+
+            setResetPassord(true);
+        },
+        [setFieldValue, setResetPassord],
+    );
+
     const {
         getTableProps,
         getTableBodyProps,
@@ -61,7 +87,14 @@ const SeteTableComponent: React.FC<ISeteTableComponentProps> = ({
         {
             columns,
             data,
-            initialState: { pageSize: 10 },
+            initialState: {
+                pageSize: 10,
+                hiddenColumns: [
+                    'nivel_permissao',
+                    'id_usuario',
+                    'codigo_cidade',
+                ],
+            },
         },
         useGlobalFilter,
         useSortBy,
@@ -138,9 +171,20 @@ const SeteTableComponent: React.FC<ISeteTableComponentProps> = ({
                             return (
                                 <tr {...row.getRowProps()} key={index}>
                                     {row.cells.map((cell, index) => {
+                                        let clickEvent: clickFunction = null;
+                                        if (index === 4) {
+                                            clickEvent = () => {
+                                                handleRowClick(row.values);
+                                            };
+                                        }
                                         return (
                                             <td
                                                 {...cell.getCellProps()}
+                                                onClick={
+                                                    clickEvent as (
+                                                        event: React.MouseEvent<HTMLTableDataCellElement>,
+                                                    ) => void
+                                                }
                                                 key={index}
                                             >
                                                 {cell.render('Cell')}

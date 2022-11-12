@@ -101,3 +101,29 @@ export const USERS_SETE_LIST = (
         },
     };
 };
+
+export interface ADMIN_CHANGE_USER_PASSWORD_FIREBASE {
+    nome: string;
+    cpf: string;
+    telefone: string;
+    email: string;
+    password: string;
+    nivel_permissao: string;
+}
+
+export const CHANGE_PASSWORD_FIREBASE = (
+    body: ADMIN_CHANGE_USER_PASSWORD_FIREBASE,
+    codigo_cidade: number,
+    id_usuario: number,
+    token: string | null,
+): AxiosRequestConfig => {
+    return {
+        method: 'put',
+        headers: {
+            Authorization: token,
+            'Content-Type': 'application/json',
+        },
+        url: `/users/sete/${codigo_cidade}/${id_usuario}`,
+        data: body,
+    };
+};

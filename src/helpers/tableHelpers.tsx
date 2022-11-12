@@ -1,13 +1,10 @@
 import React from 'react';
 import { RiDeleteBack2Line } from 'react-icons/ri';
 import { ColumnWithLooseAccessor } from 'react-table';
-import { Link } from 'react-router-dom';
+import ReactTooltip from 'react-tooltip';
 
 import { FaEdit, FaRegTimesCircle, FaSearch } from 'react-icons/fa';
-import {
-    useResetPassword,
-    ResetUserPasswordProvider,
-} from '../contexts/ResetUserPasswordContext';
+
 import { ButtonContainer } from '../components/Buttons/YellowButton/styles';
 
 export const cityTableColumns: Array<ColumnWithLooseAccessor> = [
@@ -178,6 +175,15 @@ export const seteUsersListTableColumns: Array<ColumnWithLooseAccessor> = [
         Header: 'SENHA',
         accessor: 'senha',
     },
+    {
+        accessor: 'nivel_permissao',
+    },
+    {
+        accessor: 'id_usuario',
+    },
+    {
+        accessor: 'codigo_cidade',
+    },
 ];
 
 export interface ISeteUserListData {
@@ -186,47 +192,50 @@ export interface ISeteUserListData {
     cpf: string;
     telefone: string;
     email: string;
+    nivel_permissao: string;
+    id_usuario: string;
+    codigo_cidade: string;
 }
 
 const AcoesComponent: React.FC = () => {
-    const { resetPassord, setResetPassord } = useResetPassword();
     return (
-        <div
-            style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-            }}
-        >
-            {/* <OverlayTrigger
-                key="bottom"
-                placement="bottom"
-                overlay={<Tooltip id="tooltip">Alterar Senha</Tooltip>}
-            > */}
-            <button
-                onClick={() => setResetPassord(true)}
-                style={{
-                    display: 'block',
-                    marginBottom: '-2px',
-                    border: 'none',
-                    backgroundColor: 'transparent',
-                    cursor: 'pointer',
-                }}
-            >
-                <FaSearch size={'16px'} color={'gray'} />
-            </button>
-        </div>
+        <>
+            <div data-tip="hello world">
+                <div
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}
+                >
+                    <button
+                        style={{
+                            display: 'block',
+                            marginBottom: '-2px',
+                            border: 'none',
+                            backgroundColor: 'transparent',
+                            cursor: 'pointer',
+                        }}
+                    >
+                        <FaSearch size={'16px'} color={'gray'} />
+                    </button>
+                </div>
+            </div>
+            <ReactTooltip>Alterar Senha</ReactTooltip>{' '}
+        </>
     );
 };
 
 export const seteUserListTableDataHandle = (arr: Array<ISeteUserListData>) => {
     return arr.map((item) => {
-        console.log('item', item);
         let itemData = {
+            id_usuario: item.id_usuario,
+            codigo_cidade: item.codigo_cidade,
             nome: item.nome,
             email: item.email,
             telefone: item.telefone,
             cpf: item.cpf,
+            nivel_permissao: item.nivel_permissao,
             senha: <AcoesComponent />,
         };
         return itemData;
