@@ -14,15 +14,20 @@ import {
 
 import { useErrorHandler } from '../../../hooks/Errors';
 import { useAlertModal } from '../../../hooks/AlertModal';
-import { api, FREE_ACCESS_FIREBASE } from '../../../services/SeteApi';
-import {
-    useResetPassword,
-    ResetUserPasswordProvider,
-} from '../../../contexts/ResetUserPasswordContext';
+import { api, CHANGE_PASSWORD_FIREBASE } from '../../../services/UserApi';
+
+import md5 from 'md5';
 
 interface IFormikValues {
-    permission_email: string;
-    permission_checkbox: string;
+    nome: string;
+    telefone: string;
+    cpf: string;
+    email: string;
+    permissao: string;
+    password: string;
+    confirm_password: string;
+    codigo_cidade: string;
+    id_usuario: string;
 }
 
 export interface ICityInfo {
@@ -46,6 +51,7 @@ export interface ITableModalData {
     cpf: string;
     telefone: string;
     email: string;
+    nivel_permissao: string;
 }
 
 const CityTableComponent: React.FC = () => {
@@ -60,14 +66,11 @@ const CityTableComponent: React.FC = () => {
         fetchData,
     } = useSeteTables('city');
     const [cityInfo, setCityInfo] = React.useState<ICityInfo | null>(null);
-    const { resetPassord, setResetPassord } = useResetPassword();
+
     const [tableModalIsOpened, setTableModalIsOpened] = React.useState<boolean>(
         false,
     );
-    const [
-        resetPasswordModalIsOpened,
-        setResetPasswordModalIsOpened,
-    ] = React.useState<boolean>(false);
+    const [resetPassord, setResetPassord] = React.useState<boolean>(false);
 
     const [tableModalData, setTableModalData] = React.useState<
         Array<ITableModalData> | {}
@@ -82,12 +85,20 @@ const CityTableComponent: React.FC = () => {
             setSubmitting(true);
             const token = window.localStorage.getItem('@seteweb:token');
             const body = {
-                email: values.permission_email,
-                tipo_permissao: values.permission_checkbox,
+                nome: values.nome,
+                telefone: values.telefone,
+                cpf: values.cpf,
+                email: values.email,
+                nivel_permissao: values.permissao,
+                password: md5(values.password),
             };
+
+            const id_usuario = Number(values.id_usuario);
+            const codigo_cidade = Number(values.codigo_cidade);
+
             const modalCheck = await createModalAsync('warning', {
-                title: 'Deseja liberar acesso para:',
-                text: body.email,
+                title: 'Deseja alterar a senha do usuário:',
+                text: body.nome,
                 buttons: {
                     no: {
                         text: 'Não!',
@@ -101,7 +112,14 @@ const CityTableComponent: React.FC = () => {
                 className: 'swal-buttons',
             });
             if (modalCheck) {
-                const response = await api(FREE_ACCESS_FIREBASE(body, token));
+                const response = await api(
+                    CHANGE_PASSWORD_FIREBASE(
+                        body,
+                        id_usuario,
+                        codigo_cidade,
+                        token,
+                    ),
+                );
                 const data = await response.data;
                 warningHandler(data);
                 resetForm();
@@ -113,20 +131,29 @@ const CityTableComponent: React.FC = () => {
             setSubmitting(false);
         }
     }
-    React.useEffect(() => {
-        console.log('reset', resetPassord);
-    }, [resetPassord]);
+
     return (
         <Container>
             <Formik
                 initialValues={{
-                    permission_email: '',
-                    permission_checkbox: 'reader',
+                    nome: '',
+                    telefone: 'reader',
+                    cpf: '',
+                    email: '',
+                    permissao: '',
+                    password: '',
+                    confirm_password: 'reader',
+                    codigo_cidade: '',
+                    id_usuario: '',
                 }}
                 validationSchema={Yup.object().shape({
-                    permission_email: Yup.string()
-                        .required('O Email deve ser preenchido')
-                        .email('O valor deve ser um email válido'),
+                    password: Yup.string().required('Escreva uma senha'),
+                    confirm_password: Yup.string()
+                        .required('Confirme sua senha')
+                        .oneOf(
+                            [Yup.ref('password'), null],
+                            'As senhas devem ser iguais',
+                        ),
                 })}
                 onSubmit={handleFormikSubmit}
             >
@@ -146,8 +173,7 @@ const CityTableComponent: React.FC = () => {
                             />
                         ) : !!resetPassord ? (
                             <ResetPasswordForm
-                                setModalIsOpened={setResetPasswordModalIsOpened}
-                                modalIsOpened={resetPassord}
+                                setResetPassord={setResetPassord}
                                 handleSubmit={handleSubmit}
                                 isSubmitting={isSubmitting}
                             />
@@ -158,6 +184,7 @@ const CityTableComponent: React.FC = () => {
                                     tableModalData as Array<ISeteUserListData>,
                                 )}
                                 setTableModalIsOpened={setTableModalIsOpened}
+                                setResetPassord={setResetPassord}
                                 cityInfo={cityInfo}
                                 setCityInfo={setCityInfo}
                             />

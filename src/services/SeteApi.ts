@@ -41,6 +41,7 @@ export interface IFREE_ACCESS_FIREBASE {
     email: string;
     tipo_permissao: string;
 }
+
 export const FREE_ACCESS_FIREBASE = (
     body: IFREE_ACCESS_FIREBASE,
     token: string | null,
