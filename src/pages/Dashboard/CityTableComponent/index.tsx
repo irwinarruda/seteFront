@@ -52,6 +52,7 @@ export interface ITableModalData {
     telefone: string;
     email: string;
     nivel_permissao: string;
+    is_liberado: string;
 }
 
 const CityTableComponent: React.FC = () => {

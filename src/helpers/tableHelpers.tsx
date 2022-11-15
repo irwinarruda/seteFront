@@ -166,16 +166,20 @@ export const seteUsersListTableColumns: Array<ColumnWithLooseAccessor> = [
         accessor: 'email',
     },
     {
-        Header: 'Telefone',
-        accessor: 'telefone',
-    },
-    {
         Header: 'CPF',
         accessor: 'cpf',
     },
     {
+        Header: 'Liberado',
+        accessor: 'is_liberado',
+    },
+
+    {
         Header: 'AÇÕES',
         accessor: 'senha',
+    },
+    {
+        accessor: 'telefone',
     },
     {
         accessor: 'nivel_permissao',
@@ -197,6 +201,7 @@ export interface ISeteUserListData {
     nivel_permissao: string;
     id_usuario: string;
     codigo_cidade: string;
+    is_liberado: string;
 }
 
 const AcoesComponent: React.FC = () => {
@@ -236,6 +241,7 @@ export const seteUserListTableDataHandle = (arr: Array<ISeteUserListData>) => {
             email: item.email,
             telefone: item.telefone,
             cpf: item.cpf,
+            is_liberado: item.is_liberado === 'S' ? 'Sim' : 'Não',
             nivel_permissao: item.nivel_permissao,
             senha: <AcoesComponent />,
         };

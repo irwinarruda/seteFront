@@ -93,6 +93,7 @@ const SeteTableComponent: React.FC<ISeteTableComponentProps> = ({
                     'nivel_permissao',
                     'id_usuario',
                     'codigo_cidade',
+                    'telefone',
                 ],
             },
         },
