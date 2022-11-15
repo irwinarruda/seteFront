@@ -5,6 +5,8 @@ import ReactTooltip from 'react-tooltip';
 
 import { FaEdit, FaRegTimesCircle, FaSearch } from 'react-icons/fa';
 
+import ChangePasswordIcon from '../assets/icon/password.png';
+
 import { ButtonContainer } from '../components/Buttons/YellowButton/styles';
 
 export const cityTableColumns: Array<ColumnWithLooseAccessor> = [
@@ -172,7 +174,7 @@ export const seteUsersListTableColumns: Array<ColumnWithLooseAccessor> = [
         accessor: 'cpf',
     },
     {
-        Header: 'SENHA',
+        Header: 'AÇÕES',
         accessor: 'senha',
     },
     {
@@ -200,28 +202,27 @@ export interface ISeteUserListData {
 const AcoesComponent: React.FC = () => {
     return (
         <>
-            <div data-tip="hello world">
-                <div
+            <div
+                style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}
+                data-tip="hello world"
+            >
+                <img
                     style={{
                         display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
+                        marginBottom: '-2px',
+                        border: 'none',
+                        backgroundColor: 'transparent',
+                        cursor: 'pointer',
                     }}
-                >
-                    <button
-                        style={{
-                            display: 'block',
-                            marginBottom: '-2px',
-                            border: 'none',
-                            backgroundColor: 'transparent',
-                            cursor: 'pointer',
-                        }}
-                    >
-                        <FaSearch size={'16px'} color={'gray'} />
-                    </button>
-                </div>
+                    src={ChangePasswordIcon}
+                    width="30px"
+                />
             </div>
-            <ReactTooltip>Alterar Senha</ReactTooltip>{' '}
+            <ReactTooltip>Alterar Senha</ReactTooltip>
         </>
     );
 };

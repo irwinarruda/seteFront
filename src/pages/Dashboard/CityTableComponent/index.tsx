@@ -115,14 +115,15 @@ const CityTableComponent: React.FC = () => {
                 const response = await api(
                     CHANGE_PASSWORD_FIREBASE(
                         body,
-                        id_usuario,
                         codigo_cidade,
+                        id_usuario,
                         token,
                     ),
                 );
                 const data = await response.data;
                 warningHandler(data);
                 resetForm();
+                setResetPassord(false);
             }
         } catch (err) {
             errorHandler(err, { title: 'Erro ao Liberar Acesso' });
@@ -137,12 +138,12 @@ const CityTableComponent: React.FC = () => {
             <Formik
                 initialValues={{
                     nome: '',
-                    telefone: 'reader',
+                    telefone: '',
                     cpf: '',
                     email: '',
                     permissao: '',
                     password: '',
-                    confirm_password: 'reader',
+                    confirm_password: '',
                     codigo_cidade: '',
                     id_usuario: '',
                 }}
